@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # icons
+  #icons
   cupertino_icons: ^1.0.2
   ionicons: ^0.2.2
 
@@ -61,6 +61,12 @@ dependencies:
 
   #text
   auto_size_text: ^3.0.0
+
+  #day picker
+  day_picker: ^2.2.0
+
+  #color picker
+  flutter_colorpicker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

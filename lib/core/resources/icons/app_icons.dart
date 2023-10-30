@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/App.ttf
 ///
-/// 
+///
 ///
 import 'package:flutter/widgets.dart';
 
@@ -21,5 +21,8 @@ class AppIcons {
   static const _kFontFam = 'AppIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData config = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData config =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sort =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

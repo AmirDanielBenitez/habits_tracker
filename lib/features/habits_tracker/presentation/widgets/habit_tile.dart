@@ -40,7 +40,11 @@ class _HabitTileState extends State<HabitTile> {
       },
       child: Container(
           height: 55.0,
-          color: kPrimaryColor,
+          decoration: BoxDecoration(
+            color: kPrimaryColor,
+            //analizar
+            // border: Border.all(color: Colors.red, width: 2.5),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
           child: Row(
             children: [
@@ -62,9 +66,14 @@ class _HabitTileState extends State<HabitTile> {
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
+                    shadows: [
+                      Shadow(color: Colors.white, offset: Offset(0, -5))
+                    ],
                     fontSize: 20.0,
-                    color: Colors.white,
+                    color: Colors.transparent,
                     fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.yellow,
                   ),
                   minFontSize: 10.0,
                   overflow: TextOverflow.ellipsis,

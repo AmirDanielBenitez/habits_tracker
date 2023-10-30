@@ -153,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  day_picker:
+    dependency: "direct main"
+    description:
+      name: day_picker
+      sha256: a0f73716d688b3643769db39e7626cae54026bec24c33a8ebf5a6f8c618a05f2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   dio:
     dependency: transitive
     description:
@@ -230,6 +238,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
+  flutter_colorpicker:
+    dependency: "direct main"
+    description:
+      name: flutter_colorpicker
+      sha256: "458a6ed8ea480eb16ff892aedb4b7092b2804affd7e046591fb03127e8d8ef8b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   flutter_hooks:
     dependency: "direct main"
     description:

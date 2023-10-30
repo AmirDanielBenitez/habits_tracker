@@ -1,9 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
-import 'package:svg_icon/svg_icon.dart';
 
 import '../../widgets/habit_tile.dart';
 // import 'package:habits_tracker/assets/icons/app_icons.dart';
@@ -26,7 +23,9 @@ class HomeHabits extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kAccentColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/create-habits');
+                  },
                   child: const Text(
                     'Create Habit',
                     style: TextStyle(fontWeight: FontWeight.bold),
