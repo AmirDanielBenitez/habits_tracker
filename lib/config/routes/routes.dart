@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/pages/create_habits/create_habits.dart';
+import 'package:habits_tracker/features/habits_tracker/presentation/pages/edit_habits/edit_habits.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/pages/home_habits/home_habits.dart';
 
 class AppRoutes {
@@ -9,6 +11,10 @@ class AppRoutes {
         return _materialRoute(const HomeHabits());
       case '/create-habits':
         return _materialRoute(const CreateHabitsPage());
+      case '/edit-habits':
+        return _materialRoute(EditHabitsPage(
+          habit: settings.arguments as HabitEntity,
+        ));
       default:
         return _materialRoute(const HomeHabits());
     }

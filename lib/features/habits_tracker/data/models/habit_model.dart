@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 
 class HabitModel extends HabitEntity {
@@ -9,7 +10,7 @@ class HabitModel extends HabitEntity {
     required String name,
     final int? streak,
     required Color color,
-    final List<Map<String, bool>>? checkList,
+    final List<CheckListEntity>? checkList,
     final DayTimeHabit dayTime = DayTimeHabit.anytime,
     final List<String>? specificDays,
   }) : super(

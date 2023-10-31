@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 
 import '../../widgets/habit_tile.dart';
 // import 'package:habits_tracker/assets/icons/app_icons.dart';
@@ -60,9 +62,18 @@ class HomeHabits extends StatelessWidget {
               padding: const EdgeInsets.only(top: 15),
               itemCount: 10,
               itemBuilder: (context, index) => HabitTile(
-                habitName: 'Pray',
-                done: (index % 2 == 0),
-                streak: 10,
+                habit: HabitEntity(
+                    done: (index % 2 == 0),
+                    id: index,
+                    name: 'Pray',
+                    streak: 10,
+                    checkList: const [
+                      CheckListEntity(name: 'Pray morning'),
+                      CheckListEntity(name: 'Pray evening'),
+                    ],
+                    dayTime: DayTimeHabit.evening,
+                    specificDays: const ['Thu', 'Mon', 'Sat'],
+                    color: Colors.amber),
               ),
             ),
           ),

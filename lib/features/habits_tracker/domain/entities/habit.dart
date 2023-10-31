@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
 
 class HabitEntity extends Equatable {
   final int? id;
@@ -8,7 +9,7 @@ class HabitEntity extends Equatable {
   final String name;
   final int streak;
   final Color color;
-  final List<Map<String, bool>>? checkList;
+  final List<CheckListEntity>? checkList;
   final DayTimeHabit dayTime;
   final List<String>? specificDays;
 

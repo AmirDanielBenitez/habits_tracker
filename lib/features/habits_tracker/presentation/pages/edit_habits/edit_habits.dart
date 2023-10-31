@@ -8,17 +8,18 @@ import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dar
 import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 import 'dart:math' as math;
 
-class CreateHabitsPage extends StatefulWidget {
-  const CreateHabitsPage({super.key});
+class EditHabitsPage extends StatefulWidget {
+  final HabitEntity habit;
+  const EditHabitsPage({required this.habit, super.key});
 
   @override
-  State<CreateHabitsPage> createState() => _CreateHabitsPageState();
+  State<EditHabitsPage> createState() => _EditHabitsPageState();
 }
 
-class _CreateHabitsPageState extends State<CreateHabitsPage> {
-  String habitName = '';
+class _EditHabitsPageState extends State<EditHabitsPage> {
+  late TextEditingController habitNameController;
   late Color habitColor;
-  final List<CheckListEntity> checklist = [];
+  List<CheckListEntity> checklist = [];
   DayTimeHabit dayTime = DayTimeHabit.anytime;
   final List<Widget> daytimesList = [
     const Text(
@@ -46,17 +47,22 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   @override
   void initState() {
     super.initState();
-    habitColor =
-        Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    habitNameController = TextEditingController(text: widget.habit.name);
+    habitColor = widget.habit.color;
+    checklist = [...?widget.habit.checkList];
+    dayTime = widget.habit.dayTime;
+    repeatsEveryday = widget.habit.specificDays == null;
+    specificDays = widget.habit.specificDays;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Create Habit',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          widget.habit.name,
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           onPressed: () {
@@ -72,7 +78,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
           TextButton(
               onPressed: () {
                 final HabitEntity habit = HabitEntity(
-                  name: habitName,
+                  name: habitNameController.text,
                   color: habitColor,
                   checkList: checklist,
                   dayTime: dayTime,
@@ -87,7 +93,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                 print('Habit specificDays: ${habit.specificDays}');
               },
               child: const Text(
-                'Create',
+                'Save',
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ))
@@ -122,9 +128,10 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                           child: TextField(
                             onChanged: (text) {
                               setState(() {
-                                habitName = text;
+                                habitNameController.text = text;
                               });
                             },
+                            controller: habitNameController,
                             cursorColor: kAccentColor,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
