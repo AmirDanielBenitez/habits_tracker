@@ -1,4 +1,4 @@
-import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 
 class CheckListModel extends CheckListEntity {
   const CheckListModel({

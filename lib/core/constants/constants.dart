@@ -11,7 +11,10 @@ final List<DayInWeek> kDaysInWeek = [
     "Mon",
     dayKey: 'Mon',
   ),
-  DayInWeek("Tue", dayKey: 'Tue'),
+  DayInWeek(
+    "Tue",
+    dayKey: 'Tue',
+  ),
   DayInWeek(
     "Wed",
     dayKey: 'Wed',

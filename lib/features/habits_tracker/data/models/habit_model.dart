@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 
 class HabitModel extends HabitEntity {

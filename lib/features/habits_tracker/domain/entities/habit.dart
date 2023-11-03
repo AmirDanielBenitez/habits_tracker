@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
-import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 
 class HabitEntity extends Equatable {
   final int? id;

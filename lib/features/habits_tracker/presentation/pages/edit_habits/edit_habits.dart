@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
-import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 import 'dart:math' as math;
@@ -44,6 +44,8 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
 
   List<String>? specificDays;
 
+  List<DayInWeek> daysInWeek = kDaysInWeek;
+
   @override
   void initState() {
     super.initState();
@@ -52,7 +54,12 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
     checklist = [...?widget.habit.checkList];
     dayTime = widget.habit.dayTime;
     repeatsEveryday = widget.habit.specificDays == null;
-    specificDays = widget.habit.specificDays;
+    if (widget.habit.specificDays?.isNotEmpty ?? false) {
+      for (String specificDay in widget.habit.specificDays!) {
+        daysInWeek.firstWhere((day) => day.dayName == specificDay).isSelected =
+            true;
+      }
+    }
   }
 
   @override

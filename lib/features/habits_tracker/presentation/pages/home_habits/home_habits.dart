@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
-import 'package:habits_tracker/features/habits_tracker/domain/entities/checkList.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 
 import '../../widgets/habit_tile.dart';
@@ -51,9 +51,7 @@ class HomeHabits extends StatelessWidget {
         body: SafeArea(
           child: RefreshIndicator(
             onRefresh: () async {
-              await Future.delayed(const Duration(seconds: 1), () {
-                print('xxx: reload');
-              });
+              await Future.delayed(const Duration(seconds: 1), () {});
             },
             child: ListView.separated(
               separatorBuilder: (context, index) => const SizedBox(
@@ -67,10 +65,13 @@ class HomeHabits extends StatelessWidget {
                     id: index,
                     name: 'Pray',
                     streak: 10,
-                    checkList: const [
-                      CheckListEntity(name: 'Pray morning'),
-                      CheckListEntity(name: 'Pray evening'),
-                    ],
+                    checkList: !(index % 2 == 0)
+                        ? const [
+                            CheckListEntity(name: 'Pray morning', done: true),
+                            CheckListEntity(name: 'Pray evening'),
+                            CheckListEntity(name: 'Pray night', done: true),
+                          ]
+                        : null,
                     dayTime: DayTimeHabit.evening,
                     specificDays: const ['Thu', 'Mon', 'Sat'],
                     color: Colors.amber),
