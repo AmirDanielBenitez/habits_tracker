@@ -5,7 +5,7 @@ import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dar
 
 class HabitModel extends HabitEntity {
   const HabitModel({
-    final int? id,
+    required final int id,
     final bool? done,
     required String name,
     final int? streak,

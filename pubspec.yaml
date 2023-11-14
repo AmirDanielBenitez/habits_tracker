@@ -68,6 +68,9 @@ dependencies:
   #color picker
   flutter_colorpicker: ^1.0.3
 
+  #bloc for state
+  bloc: ^8.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

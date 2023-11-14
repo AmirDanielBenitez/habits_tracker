@@ -1,10 +1,12 @@
 import 'package:day_picker/day_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
+import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 import 'dart:math' as math;
 
@@ -71,7 +73,10 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
         actions: [
           TextButton(
               onPressed: () {
+                //#TODO
+                //agregar advertencia de campos obligatorios
                 final HabitEntity habit = HabitEntity(
+                  id: 0,
                   name: habitName,
                   color: habitColor,
                   checkList: checklist,
@@ -85,6 +90,9 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                 print('Habit checkList: ${habit.checkList}');
                 print('Habit dayTime: ${habit.dayTime}');
                 print('Habit specificDays: ${habit.specificDays}');
+                BlocProvider.of<HabitsBloc>(context)
+                    .add(CreateHabitEvent(habit));
+                Navigator.pop(context);
               },
               child: const Text(
                 'Create',
@@ -344,9 +352,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                 Expanded(
                     child: TextField(
                   onChanged: (text) {
-                    // setState(() {
                     checklist[i] = CheckListEntity(name: text);
-                    // });
                   },
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),

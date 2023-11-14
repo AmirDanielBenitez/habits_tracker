@@ -1,10 +1,12 @@
 import 'package:day_picker/day_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
+import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 import 'dart:math' as math;
 
@@ -84,7 +86,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
         actions: [
           TextButton(
               onPressed: () {
-                final HabitEntity habit = HabitEntity(
+                final HabitEntity habit = widget.habit.copyWith(
                   name: habitNameController.text,
                   color: habitColor,
                   checkList: checklist,
@@ -93,6 +95,10 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                   done: false,
                   streak: 0,
                 );
+
+                BlocProvider.of<HabitsBloc>(context).add(EditHabitEvent(habit));
+                Navigator.pop(context);
+
                 print('Habit name: ${habit.name}');
                 print('Habit color: ${habit.color}');
                 print('Habit checkList: ${habit.checkList}');
@@ -105,6 +111,18 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ))
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          BlocProvider.of<HabitsBloc>(context)
+              .add(DeleteHabitEvent(widget.habit.id));
+          Navigator.pop(context);
+        },
+        backgroundColor: kBackgroundColor,
+        foregroundColor: Colors.white,
+        child: const Icon(
+          Icons.delete_forever_rounded,
+        ),
       ),
       backgroundColor: kBackgroundColor,
       body: Padding(

@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 
 class HabitEntity extends Equatable {
-  final int? id;
+  final int id;
   final bool done;
   final String name;
   final int streak;
@@ -14,7 +14,7 @@ class HabitEntity extends Equatable {
   final List<String>? specificDays;
 
   const HabitEntity({
-    this.id,
+    required this.id,
     required this.done,
     required this.name,
     required this.streak,
@@ -32,6 +32,28 @@ class HabitEntity extends Equatable {
       name,
       streak,
     ];
+  }
+
+  HabitEntity copyWith({
+    int? id,
+    bool? done,
+    String? name,
+    int? streak,
+    Color? color,
+    List<CheckListEntity>? checkList,
+    DayTimeHabit? dayTime,
+    List<String>? specificDays,
+  }) {
+    return HabitEntity(
+      id: id ?? this.id,
+      done: done ?? this.done,
+      name: name ?? this.name,
+      streak: streak ?? this.streak,
+      color: color ?? this.color,
+      checkList: checkList ?? this.checkList,
+      dayTime: dayTime ?? this.dayTime,
+      specificDays: specificDays ?? this.specificDays,
+    );
   }
 }
 
