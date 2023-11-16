@@ -37,10 +37,10 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       final bool created = await _habitUseCase.create(habit: event.habit);
 
       if (created) {
-        habits.add(event.habit);
-
-        emit(HabitsLoaded(habits));
+        final List<HabitEntity> habitsUpdated = await _habitUseCase();
+        emit(HabitsLoaded(habitsUpdated));
       } else {
+        emit(HabitsLoaded(habits));
         //#TODO
         // agregar alerta de no creado
       }
@@ -54,12 +54,21 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
   Future<void> _onEditHabitEvent(
       EditHabitEvent event, Emitter<HabitsState> emit) async {
     try {
+      List<HabitEntity> habits = [];
+      if (state is HabitsLoaded) {
+        habits = (state as HabitsLoaded).habits;
+      }
       emit(HabitsLoading());
 
-      final List<HabitEntity> habits =
-          await _habitUseCase.edit(habit: event.habit);
-
-      emit(HabitsLoaded(habits));
+      final bool edited = await _habitUseCase.edit(habit: event.habit);
+      if (edited) {
+        final List<HabitEntity> habitsUpdated = await _habitUseCase();
+        emit(HabitsLoaded(habitsUpdated));
+      } else {
+        emit(HabitsLoaded(habits));
+        //#TODO
+        // agregar alerta de no creado
+      }
     } catch (e) {
       print(e);
       //#TODO
@@ -70,11 +79,23 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
   Future<void> _onDeleteHabitEvent(
       DeleteHabitEvent event, Emitter<HabitsState> emit) async {
     try {
+      List<HabitEntity> habits = [];
+      if (state is HabitsLoaded) {
+        habits = (state as HabitsLoaded).habits;
+      }
       emit(HabitsLoading());
 
-      final List<HabitEntity> habits =
+      final bool deleted =
           await _habitUseCase.delete(habitCode: event.habitCode);
 
+      if (deleted) {
+        final List<HabitEntity> habitsUpdated = await _habitUseCase();
+        emit(HabitsLoaded(habitsUpdated));
+      } else {
+        emit(HabitsLoaded(habits));
+        //#TODO
+        // agregar alerta de no eliminado
+      }
       emit(HabitsLoaded(habits));
     } catch (e) {
       print(e);

@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:habits_tracker/core/database.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 
@@ -46,6 +48,20 @@ class HabitModel extends HabitEntity {
       checkList: entity.checkList,
       dayTime: entity.dayTime,
       specificDays: entity.specificDays,
+    );
+  }
+  factory HabitModel.fromItem(HabitItem item) {
+    return HabitModel(
+      id: item.id,
+      done: item.done,
+      name: item.name,
+      streak: item.streak,
+      color: Color(item.color),
+      checkList: item.checkList,
+      dayTime: item.dayTime,
+      specificDays: item.specificDays != 'null'
+          ? List<String>.from(json.decode(item.specificDays!))
+          : null,
     );
   }
 }

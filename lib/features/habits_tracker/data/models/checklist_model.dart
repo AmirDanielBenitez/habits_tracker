@@ -16,6 +16,13 @@ class CheckListModel extends CheckListEntity {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'done': done,
+    };
+  }
+
   factory CheckListModel.fromEntity(CheckListEntity entity) {
     return CheckListModel(
       name: entity.name,

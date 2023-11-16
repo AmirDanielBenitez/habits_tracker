@@ -16,11 +16,11 @@ class HabitUseCase implements UseCase<List<HabitEntity>, void> {
     return _habitRepository.createHabit(habit);
   }
 
-  Future<List<HabitEntity>> edit({required HabitEntity habit}) {
+  Future<bool> edit({required HabitEntity habit}) {
     return _habitRepository.editHabit(habit);
   }
 
-  Future<List<HabitEntity>> delete({required int habitCode}) {
+  Future<bool> delete({required int habitCode}) {
     return _habitRepository.deleteHabit(habitCode);
   }
 }

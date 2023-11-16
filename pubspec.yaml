@@ -48,7 +48,10 @@ dependencies:
   intl: ^0.18.1
 
   #Database
-  floor: ^1.4.2
+  drift: ^2.13.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  path: ^1.8.3
 
   #make request to api
   retrofit: ^4.0.1
@@ -74,8 +77,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # Lints
   flutter_lints: ^2.0.3
+  # Retrofit
   retrofit_generator: ^7.0.8
+  # Drift
+  drift_dev: ^2.13.0
+  build_runner: ^2.4.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

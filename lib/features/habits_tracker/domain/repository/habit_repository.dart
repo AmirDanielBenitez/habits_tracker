@@ -8,7 +8,7 @@ abstract class HabitRepository {
 
   Future<bool> createHabit(HabitEntity habit);
 
-  Future<List<HabitEntity>> editHabit(HabitEntity habit);
+  Future<bool> editHabit(HabitEntity habit);
 
-  Future<List<HabitEntity>> deleteHabit(int habitCode);
+  Future<bool> deleteHabit(int habitCode);
 }

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:habits_tracker/core/database.dart';
 import 'package:habits_tracker/features/habits_tracker/data/repository/habit_repository_impl.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/repository/habit_repository.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/usecases/habit_usecase.dart';
@@ -7,6 +8,10 @@ import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
+  // Database
+  final database = AppDatabase();
+  sl.registerSingleton<AppDatabase>(database);
+
   // Dependencies
   sl.registerSingleton<HabitRepository>(HabitRepositoryImpl());
 

@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
-import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
-import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
 
 import '../../widgets/habit_tile.dart';
-// import 'package:habits_tracker/assets/icons/app_icons.dart';
 
 class HomeHabits extends StatelessWidget {
   const HomeHabits({super.key});
@@ -83,26 +80,6 @@ class HomeHabits extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return HabitTile(habit: state.habits[index]);
                             },
-                            // itemCount: 10,
-                            // itemBuilder: (context, index) => HabitTile(
-                            //   habit: HabitEntity(
-                            //       done: (index % 2 == 0),
-                            //       id: index,
-                            //       name: 'Pray',
-                            //       streak: 10,
-                            //       checkList: !(index % 2 == 0)
-                            //           ? const [
-                            //               CheckListEntity(
-                            //                   name: 'Pray morning', done: true),
-                            //               CheckListEntity(name: 'Pray evening'),
-                            //               CheckListEntity(
-                            //                   name: 'Pray night', done: true),
-                            //             ]
-                            //           : null,
-                            //       dayTime: DayTimeHabit.evening,
-                            //       specificDays: const ['Thu', 'Mon', 'Sat'],
-                            //       color: Colors.amber),
-                            // ),
                           )
                         : Center(
                             child: Column(

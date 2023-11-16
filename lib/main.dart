@@ -10,6 +10,22 @@ import 'injection_container.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
+
+  // await database.into(database.habitItems).insert(HabitItemsCompanion.insert(
+  //       name: 'Pray',
+  //       color: Colors.red.value,
+  //       // streak: Value(0),
+  //       checkList: const Value([
+  //         CheckListModel(name: 'Pray Morning', done: false),
+  //         CheckListModel(name: 'Pray Night', done: false),
+  //       ]),
+  //       dayTime: const Value(DayTimeHabit.evening),
+  //       specificDays: const Value('["mon","fri"]'),
+  //     ));
+  // List<HabitItem> allItems = await database.select(database.habitItems).get();
+  // print('items in database: $allItems');
+  // HabitEntity habit = HabitModel.fromItem(allItems.first);
+
   runApp(const MyApp());
 }
 
