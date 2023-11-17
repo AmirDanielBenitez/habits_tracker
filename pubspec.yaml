@@ -31,48 +31,51 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #icons
+  # icons
   cupertino_icons: ^1.0.2
   ionicons: ^0.2.2
 
-  #state management
+  # state management
   flutter_bloc: ^8.1.3
 
-  #comparing dart objects
+  # comparing dart objects
   equatable: ^2.0.5
 
-  #service locator
+  # service locator
   get_it: ^7.6.4
 
-  #dateFormat
+  # dateFormat
   intl: ^0.18.1
 
-  #Database
+  # Database
   drift: ^2.13.0
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
   path: ^1.8.3
 
-  #make request to api
+  # make request to api
   retrofit: ^4.0.1
 
-  #Hooks
+  # Hooks
   flutter_hooks: ^0.20.1
 
-  #svg
+  # svg
   svg_icon: ^0.0.1
 
-  #text
+  # text
   auto_size_text: ^3.0.0
 
-  #day picker
+  # day picker
   day_picker: ^2.2.0
 
-  #color picker
+  # color picker
   flutter_colorpicker: ^1.0.3
 
-  #bloc for state
+  # bloc for state
   bloc: ^8.1.2
+
+  # toast
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:

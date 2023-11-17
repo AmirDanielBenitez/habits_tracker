@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/usecases/habit_usecase.dart';
 
@@ -39,15 +40,14 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (created) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
+        showToast('Habit created');
       } else {
         emit(HabitsLoaded(habits));
-        //#TODO
-        // agregar alerta de no creado
+        showToast('Habit not created', error: true);
       }
     } catch (e) {
       print(e);
-      //#TODO
-      // agregar alerta de no creado
+      showToast('Habit not created', error: true);
     }
   }
 
@@ -64,15 +64,14 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (edited) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
+        showToast('Habit edited');
       } else {
         emit(HabitsLoaded(habits));
-        //#TODO
-        // agregar alerta de no creado
+        showToast('Habit not edited', error: true);
       }
     } catch (e) {
       print(e);
-      //#TODO
-      // agregar alerta de no editado
+      showToast('Habit not edited', error: true);
     }
   }
 
@@ -91,16 +90,15 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (deleted) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
+        showToast('Habit deleted');
       } else {
         emit(HabitsLoaded(habits));
-        //#TODO
-        // agregar alerta de no eliminado
+        showToast('Habit not deleted', error: true);
       }
       emit(HabitsLoaded(habits));
     } catch (e) {
       print(e);
-      //#TODO
-      // agregar alerta de no eliminado
+      showToast('Habit not deleted', error: true);
     }
   }
 }
