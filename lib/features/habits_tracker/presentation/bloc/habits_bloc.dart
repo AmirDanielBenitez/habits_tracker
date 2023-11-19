@@ -15,11 +15,14 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
     on<CreateHabitEvent>(_onCreateHabitEvent);
     on<EditHabitEvent>(_onEditHabitEvent);
     on<DeleteHabitEvent>(_onDeleteHabitEvent);
+    on<DoneHabitEvent>(_onDoneHabitEvent);
   }
 
   Future<void> _onLoadHabitsEvent(
       LoadHabitsEvent event, Emitter<HabitsState> emit) async {
     emit(HabitsLoading());
+
+    await _habitUseCase.checkStreak();
 
     final List<HabitEntity> habits = await _habitUseCase();
 
@@ -99,6 +102,31 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
     } catch (e) {
       print(e);
       showToast('Habit not deleted', error: true);
+    }
+  }
+
+  Future<void> _onDoneHabitEvent(
+      DoneHabitEvent event, Emitter<HabitsState> emit) async {
+    try {
+      List<HabitEntity> habits = [];
+      if (state is HabitsLoaded) {
+        habits = (state as HabitsLoaded).habits;
+      }
+      emit(HabitsLoading());
+
+      final bool done =
+          await _habitUseCase.done(event.done, habitCode: event.habitCode);
+      if (done) {
+        final List<HabitEntity> habitsUpdated = await _habitUseCase();
+        emit(HabitsLoaded(habitsUpdated));
+        showToast('Habit done');
+      } else {
+        emit(HabitsLoaded(habits));
+        showToast('Habit not done', error: true);
+      }
+    } catch (e) {
+      print(e);
+      showToast('Habit not done', error: true);
     }
   }
 }

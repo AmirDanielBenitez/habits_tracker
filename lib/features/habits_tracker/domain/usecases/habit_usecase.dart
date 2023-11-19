@@ -12,6 +12,10 @@ class HabitUseCase implements UseCase<List<HabitEntity>, void> {
     return _habitRepository.getSavedHabits();
   }
 
+  Future<bool> checkStreak() {
+    return _habitRepository.checkStreak();
+  }
+
   Future<bool> create({required HabitEntity habit}) {
     return _habitRepository.createHabit(habit);
   }
@@ -22,5 +26,9 @@ class HabitUseCase implements UseCase<List<HabitEntity>, void> {
 
   Future<bool> delete({required int habitCode}) {
     return _habitRepository.deleteHabit(habitCode);
+  }
+
+  Future<bool> done(bool done, {required int habitCode}) {
+    return _habitRepository.doneHabit(done, habitCode);
   }
 }

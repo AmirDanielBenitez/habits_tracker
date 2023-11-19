@@ -19,6 +19,48 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
+  Future<bool> checkStreak() async {
+    try {
+      List<HabitItem> allHabitItems =
+          await sl<AppDatabase>().select(sl<AppDatabase>().habitItems).get();
+
+      final now = DateTime.now();
+      final yesterday = DateTime(now.year, now.month, now.day - 1);
+
+      for (HabitItem habit in allHabitItems) {
+        if (habit.lastEdited.year < now.year ||
+            habit.lastEdited.month < now.month ||
+            habit.lastEdited.day < now.day) {
+          if (habit.done && !habit.lastEdited.isBefore(yesterday)) {
+            sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+              ..where((tbl) => tbl.id.equals(habit.id))
+              ..write(
+                HabitItemsCompanion(
+                  done: const Value(false),
+                  lastEdited: Value(DateTime.now()),
+                ),
+              );
+          } else {
+            sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+              ..where((tbl) => tbl.id.equals(habit.id))
+              ..write(
+                HabitItemsCompanion(
+                  done: const Value(false),
+                  streak: const Value(0),
+                  lastEdited: Value(DateTime.now()),
+                ),
+              );
+          }
+        }
+      }
+
+      return Future.value(true);
+    } catch (e) {
+      return Future.value(false);
+    }
+  }
+
+  @override
   Future<bool> createHabit(HabitEntity habit) async {
     try {
       HabitItem? habitCreated = await sl<AppDatabase>()
@@ -69,13 +111,41 @@ class HabitRepositoryImpl implements HabitRepository {
   @override
   Future<bool> deleteHabit(int habitCode) async {
     try {
-      // ignore: avoid_single_cascade_in_expression_statements
       final int deleted =
           await (sl<AppDatabase>().delete(sl<AppDatabase>().habitItems)
                 ..where((tbl) => tbl.id.equals(habitCode)))
               .go();
 
       return Future.value(deleted > 0);
+    } catch (e) {
+      return Future.value(false);
+    }
+  }
+
+  @override
+  Future<bool> doneHabit(bool done, int habitCode) async {
+    try {
+      final habitToUpdate = sl<AppDatabase>()
+          .select(sl<AppDatabase>().habitItems)
+        ..where((tbl) => tbl.id.equals(habitCode));
+
+      final HabitItem habitItem = await habitToUpdate.getSingle();
+
+      sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+        ..where((tbl) => tbl.id.equals(habitCode))
+        ..write(
+          HabitItemsCompanion(
+            done: Value(done),
+            streak: Value(done
+                ? (habitItem.streak + 1)
+                : habitItem.streak > 0
+                    ? (habitItem.streak - 1)
+                    : 0),
+            lastEdited: Value(DateTime.now()),
+          ),
+        );
+
+      return Future.value(true);
     } catch (e) {
       return Future.value(false);
     }

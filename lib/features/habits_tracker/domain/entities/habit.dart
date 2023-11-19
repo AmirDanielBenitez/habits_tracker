@@ -12,6 +12,7 @@ class HabitEntity extends Equatable {
   final List<CheckListEntity>? checkList;
   final DayTimeHabit dayTime;
   final List<String>? specificDays;
+  final DateTime lastEdited;
 
   const HabitEntity({
     required this.id,
@@ -19,6 +20,7 @@ class HabitEntity extends Equatable {
     required this.name,
     required this.streak,
     required this.color,
+    required this.lastEdited,
     this.checkList,
     this.dayTime = DayTimeHabit.anytime,
     this.specificDays,
@@ -26,12 +28,7 @@ class HabitEntity extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      id,
-      done,
-      name,
-      streak,
-    ];
+    return [id, done, name, streak, lastEdited];
   }
 
   HabitEntity copyWith({
@@ -43,6 +40,7 @@ class HabitEntity extends Equatable {
     List<CheckListEntity>? checkList,
     DayTimeHabit? dayTime,
     List<String>? specificDays,
+    DateTime? lastEdited,
   }) {
     return HabitEntity(
       id: id ?? this.id,
@@ -53,6 +51,7 @@ class HabitEntity extends Equatable {
       checkList: checkList ?? this.checkList,
       dayTime: dayTime ?? this.dayTime,
       specificDays: specificDays ?? this.specificDays,
+      lastEdited: lastEdited ?? this.lastEdited,
     );
   }
 }

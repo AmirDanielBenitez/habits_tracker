@@ -67,9 +67,26 @@ class $HabitItemsTable extends HabitItems
   late final GeneratedColumn<String> specificDays = GeneratedColumn<String>(
       'specific_days', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _lastEditedMeta =
+      const VerificationMeta('lastEdited');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, done, name, streak, color, checkList, dayTime, specificDays];
+  late final GeneratedColumn<DateTime> lastEdited = GeneratedColumn<DateTime>(
+      'last_edited', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      clientDefault: () => DateTime.now());
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        done,
+        name,
+        streak,
+        color,
+        checkList,
+        dayTime,
+        specificDays,
+        lastEdited
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -111,6 +128,12 @@ class $HabitItemsTable extends HabitItems
           specificDays.isAcceptableOrUnknown(
               data['specific_days']!, _specificDaysMeta));
     }
+    if (data.containsKey('last_edited')) {
+      context.handle(
+          _lastEditedMeta,
+          lastEdited.isAcceptableOrUnknown(
+              data['last_edited']!, _lastEditedMeta));
+    }
     return context;
   }
 
@@ -138,6 +161,8 @@ class $HabitItemsTable extends HabitItems
           .read(DriftSqlType.int, data['${effectivePrefix}day_time'])!),
       specificDays: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}specific_days']),
+      lastEdited: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}last_edited'])!,
     );
   }
 
@@ -163,6 +188,7 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
   final List<CheckListModel>? checkList;
   final DayTimeHabit dayTime;
   final String? specificDays;
+  final DateTime lastEdited;
   const HabitItem(
       {required this.id,
       required this.done,
@@ -171,7 +197,8 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
       required this.color,
       this.checkList,
       required this.dayTime,
-      this.specificDays});
+      this.specificDays,
+      required this.lastEdited});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -191,6 +218,7 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
     if (!nullToAbsent || specificDays != null) {
       map['specific_days'] = Variable<String>(specificDays);
     }
+    map['last_edited'] = Variable<DateTime>(lastEdited);
     return map;
   }
 
@@ -208,6 +236,7 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
       specificDays: specificDays == null && nullToAbsent
           ? const Value.absent()
           : Value(specificDays),
+      lastEdited: Value(lastEdited),
     );
   }
 
@@ -224,6 +253,7 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
       dayTime: $HabitItemsTable.$converterdayTime
           .fromJson(serializer.fromJson<int>(json['dayTime'])),
       specificDays: serializer.fromJson<String?>(json['specificDays']),
+      lastEdited: serializer.fromJson<DateTime>(json['lastEdited']),
     );
   }
   @override
@@ -239,6 +269,7 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
       'dayTime': serializer
           .toJson<int>($HabitItemsTable.$converterdayTime.toJson(dayTime)),
       'specificDays': serializer.toJson<String?>(specificDays),
+      'lastEdited': serializer.toJson<DateTime>(lastEdited),
     };
   }
 
@@ -250,7 +281,8 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
           int? color,
           Value<List<CheckListModel>?> checkList = const Value.absent(),
           DayTimeHabit? dayTime,
-          Value<String?> specificDays = const Value.absent()}) =>
+          Value<String?> specificDays = const Value.absent(),
+          DateTime? lastEdited}) =>
       HabitItem(
         id: id ?? this.id,
         done: done ?? this.done,
@@ -261,6 +293,7 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
         dayTime: dayTime ?? this.dayTime,
         specificDays:
             specificDays.present ? specificDays.value : this.specificDays,
+        lastEdited: lastEdited ?? this.lastEdited,
       );
   @override
   String toString() {
@@ -272,14 +305,15 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
           ..write('color: $color, ')
           ..write('checkList: $checkList, ')
           ..write('dayTime: $dayTime, ')
-          ..write('specificDays: $specificDays')
+          ..write('specificDays: $specificDays, ')
+          ..write('lastEdited: $lastEdited')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, done, name, streak, color, checkList, dayTime, specificDays);
+  int get hashCode => Object.hash(id, done, name, streak, color, checkList,
+      dayTime, specificDays, lastEdited);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -291,7 +325,8 @@ class HabitItem extends DataClass implements Insertable<HabitItem> {
           other.color == this.color &&
           other.checkList == this.checkList &&
           other.dayTime == this.dayTime &&
-          other.specificDays == this.specificDays);
+          other.specificDays == this.specificDays &&
+          other.lastEdited == this.lastEdited);
 }
 
 class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
@@ -303,6 +338,7 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
   final Value<List<CheckListModel>?> checkList;
   final Value<DayTimeHabit> dayTime;
   final Value<String?> specificDays;
+  final Value<DateTime> lastEdited;
   const HabitItemsCompanion({
     this.id = const Value.absent(),
     this.done = const Value.absent(),
@@ -312,6 +348,7 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
     this.checkList = const Value.absent(),
     this.dayTime = const Value.absent(),
     this.specificDays = const Value.absent(),
+    this.lastEdited = const Value.absent(),
   });
   HabitItemsCompanion.insert({
     this.id = const Value.absent(),
@@ -322,6 +359,7 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
     this.checkList = const Value.absent(),
     this.dayTime = const Value.absent(),
     this.specificDays = const Value.absent(),
+    this.lastEdited = const Value.absent(),
   })  : name = Value(name),
         color = Value(color);
   static Insertable<HabitItem> custom({
@@ -333,6 +371,7 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
     Expression<String>? checkList,
     Expression<int>? dayTime,
     Expression<String>? specificDays,
+    Expression<DateTime>? lastEdited,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -343,6 +382,7 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
       if (checkList != null) 'check_list': checkList,
       if (dayTime != null) 'day_time': dayTime,
       if (specificDays != null) 'specific_days': specificDays,
+      if (lastEdited != null) 'last_edited': lastEdited,
     });
   }
 
@@ -354,7 +394,8 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
       Value<int>? color,
       Value<List<CheckListModel>?>? checkList,
       Value<DayTimeHabit>? dayTime,
-      Value<String?>? specificDays}) {
+      Value<String?>? specificDays,
+      Value<DateTime>? lastEdited}) {
     return HabitItemsCompanion(
       id: id ?? this.id,
       done: done ?? this.done,
@@ -364,6 +405,7 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
       checkList: checkList ?? this.checkList,
       dayTime: dayTime ?? this.dayTime,
       specificDays: specificDays ?? this.specificDays,
+      lastEdited: lastEdited ?? this.lastEdited,
     );
   }
 
@@ -398,6 +440,9 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
     if (specificDays.present) {
       map['specific_days'] = Variable<String>(specificDays.value);
     }
+    if (lastEdited.present) {
+      map['last_edited'] = Variable<DateTime>(lastEdited.value);
+    }
     return map;
   }
 
@@ -411,7 +456,8 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
           ..write('color: $color, ')
           ..write('checkList: $checkList, ')
           ..write('dayTime: $dayTime, ')
-          ..write('specificDays: $specificDays')
+          ..write('specificDays: $specificDays, ')
+          ..write('lastEdited: $lastEdited')
           ..write(')'))
         .toString();
   }

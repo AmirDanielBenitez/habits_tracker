@@ -23,3 +23,9 @@ class DeleteHabitEvent extends HabitsEvent {
   final int habitCode;
   const DeleteHabitEvent(this.habitCode);
 }
+
+class DoneHabitEvent extends HabitsEvent {
+  final bool done;
+  final int habitCode;
+  const DoneHabitEvent(this.done, {required this.habitCode});
+}

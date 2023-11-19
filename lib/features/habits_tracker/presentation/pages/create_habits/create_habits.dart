@@ -84,6 +84,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                   specificDays: repeatsEveryday ? null : specificDays,
                   done: false,
                   streak: 0,
+                  lastEdited: DateTime.now(),
                 );
                 print('Habit name: ${habit.name}');
                 print('Habit color: ${habit.color}');

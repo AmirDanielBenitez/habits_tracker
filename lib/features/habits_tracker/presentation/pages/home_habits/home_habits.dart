@@ -2,13 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
+import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
 
 import '../../widgets/habit_tile.dart';
 
-class HomeHabits extends StatelessWidget {
+class HomeHabits extends StatefulWidget with WidgetsBindingObserver {
   const HomeHabits({super.key});
+
+  @override
+  State<HomeHabits> createState() => _HomeHabitsState();
+}
+
+class _HomeHabitsState extends State<HomeHabits> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () async => setState(() {
+              BlocProvider.of<HabitsBloc>(context).add(LoadHabitsEvent());
+            })));
+  }
 
   @override
   Widget build(BuildContext context) {
