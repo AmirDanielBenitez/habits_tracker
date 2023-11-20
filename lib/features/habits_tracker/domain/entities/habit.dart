@@ -62,3 +62,11 @@ enum DayTimeHabit {
   afternoon,
   evening,
 }
+
+enum DayTimeHabitHome {
+  all,
+  anytime,
+  morning,
+  afternoon,
+  evening,
+}

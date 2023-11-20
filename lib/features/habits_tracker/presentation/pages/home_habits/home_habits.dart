@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
+import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 
 import '../../widgets/habit_tile.dart';
 
@@ -16,6 +18,8 @@ class HomeHabits extends StatefulWidget with WidgetsBindingObserver {
 }
 
 class _HomeHabitsState extends State<HomeHabits> {
+  DayTimeHabitHome dayTime = DayTimeHabitHome.all;
+
   @override
   void initState() {
     super.initState();
@@ -37,17 +41,12 @@ class _HomeHabitsState extends State<HomeHabits> {
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kAccentColor,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/create-habits');
-                  },
-                  child: const Text(
-                    'Create Habit',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )),
+              child: PrimaryButton(
+                onTap: () {
+                  Navigator.pushNamed(context, '/create-habits');
+                },
+                text: 'Create Habit',
+              ),
             ),
             IconButton(
               onPressed: () {},
@@ -86,16 +85,78 @@ class _HomeHabitsState extends State<HomeHabits> {
                       await Future.delayed(const Duration(seconds: 1), () {});
                     },
                     child: state.habits.isNotEmpty
-                        ? ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              height: 15.0,
-                            ),
-                            padding: const EdgeInsets.only(top: 15),
-                            itemCount: state.habits.length,
-                            itemBuilder: (context, index) {
-                              return HabitTile(habit: state.habits[index]);
-                            },
+                        ? Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          dayTime = DayTimeHabitHome.all;
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                            height: 36,
+                                            width: 36,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: dayTime ==
+                                                      DayTimeHabitHome.all
+                                                  ? kAccentColor
+                                                  : kPrimaryColor,
+                                            ),
+                                            child: const Center(
+                                                child: Text(
+                                              'All',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ))),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: DayTimeToggle(
+                                        dayTime,
+                                        anytimeOnTap: () {
+                                          setState(() {
+                                            dayTime = DayTimeHabitHome.anytime;
+                                          });
+                                        },
+                                        morningOnTap: () {
+                                          setState(() {
+                                            dayTime = DayTimeHabitHome.morning;
+                                          });
+                                        },
+                                        afternoonOnTap: () {
+                                          setState(() {
+                                            dayTime =
+                                                DayTimeHabitHome.afternoon;
+                                          });
+                                        },
+                                        eveningOnTap: () {
+                                          setState(() {
+                                            dayTime = DayTimeHabitHome.evening;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: HabitsList(
+                                  state.habits
+                                      .where((element) => dayTime.name != 'all'
+                                          ? (element.dayTime.name ==
+                                              dayTime.name)
+                                          : true)
+                                      .toList(),
+                                ),
+                              ),
+                            ],
                           )
                         : Center(
                             child: Column(
@@ -137,6 +198,36 @@ class _HomeHabitsState extends State<HomeHabits> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class HabitsList extends StatelessWidget {
+  final List<HabitEntity> habits;
+  const HabitsList(
+    this.habits, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.only(top: 15),
+      itemCount: habits.length,
+      itemBuilder: (context, index) {
+        final HabitEntity habit = habits[index];
+
+        if (habit.specificDays != null) {
+          final String day = kDaysInWeek[DateTime.now().weekday - 1].dayName;
+          if (!habit.specificDays!.contains(day)) {
+            return Container();
+          }
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: HabitTile(habit: habit),
+        );
+      },
     );
   }
 }

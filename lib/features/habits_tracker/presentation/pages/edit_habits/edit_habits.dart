@@ -23,24 +23,6 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
   late Color habitColor;
   List<CheckListEntity> checklist = [];
   DayTimeHabit dayTime = DayTimeHabit.anytime;
-  final List<Widget> daytimesList = [
-    const Text(
-      'Anytime',
-      style: TextStyle(color: Colors.white),
-    ),
-    const Text(
-      'Morning',
-      style: TextStyle(color: Colors.white),
-    ),
-    const Text(
-      'Afternoon',
-      style: TextStyle(color: Colors.white),
-    ),
-    const Text(
-      'Evening',
-      style: TextStyle(color: Colors.white),
-    ),
-  ];
 
   bool repeatsEveryday = true;
 
@@ -62,6 +44,12 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
             true;
       }
     }
+  }
+
+  @override
+  void dispose() {
+    specificDays = null;
+    super.dispose();
   }
 
   @override

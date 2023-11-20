@@ -36,3 +36,22 @@ final List<DayInWeek> kDaysInWeek = [
     dayKey: 'Sun',
   ),
 ];
+
+final List<Widget> daytimesList = [
+  const Text(
+    'Anytime',
+    style: TextStyle(color: Colors.white),
+  ),
+  const Text(
+    'Morning',
+    style: TextStyle(color: Colors.white),
+  ),
+  const Text(
+    'Afternoon',
+    style: TextStyle(color: Colors.white),
+  ),
+  const Text(
+    'Evening',
+    style: TextStyle(color: Colors.white),
+  ),
+];
