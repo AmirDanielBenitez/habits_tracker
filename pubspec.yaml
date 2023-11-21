@@ -76,6 +76,7 @@ dependencies:
 
   # toast
   fluttertoast: ^8.2.4
+  collection: ^1.17.2
 
 dev_dependencies:
   flutter_test:

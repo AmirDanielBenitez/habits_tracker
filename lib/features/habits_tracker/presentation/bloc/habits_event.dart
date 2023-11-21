@@ -29,3 +29,9 @@ class DoneHabitEvent extends HabitsEvent {
   final int habitCode;
   const DoneHabitEvent(this.done, {required this.habitCode});
 }
+
+class ChecklistDoneHabitEvent extends HabitsEvent {
+  final List<CheckListModel> checkList;
+  final int habitCode;
+  const ChecklistDoneHabitEvent(this.checkList, {required this.habitCode});
+}

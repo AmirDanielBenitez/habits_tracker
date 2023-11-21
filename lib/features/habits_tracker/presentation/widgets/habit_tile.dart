@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
@@ -72,7 +73,6 @@ class _HabitTileState extends State<HabitTile> {
           });
         },
         child: Ink(
-            // height: 55.0,
             decoration: BoxDecoration(
               color: kPrimaryColor,
               //analizar
@@ -105,15 +105,15 @@ class _HabitTileState extends State<HabitTile> {
                               .trim(),
                           maxLines: 1,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            shadows: [
+                          style: TextStyle(
+                            shadows: const [
                               Shadow(color: Colors.white, offset: Offset(0, -5))
                             ],
                             fontSize: 20.0,
                             color: Colors.transparent,
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,
-                            decorationColor: Colors.yellow,
+                            decorationColor: widget.habit.color,
                           ),
                           minFontSize: 10.0,
                           overflow: TextOverflow.ellipsis,
@@ -180,12 +180,23 @@ class CheckListWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (habit.checkList?.isNotEmpty ?? false)
-            for (CheckListEntity checkItem in habit.checkList!)
+            for (int i = 0; i < habit.checkList!.length; i++)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.5),
                 child: InkWell(
                   onTap: () {
-                    print('checkItem done');
+                    habit.checkList![i] = CheckListModel(
+                        name: habit.checkList![i].name,
+                        done: !habit.checkList![i].done);
+                    BlocProvider.of<HabitsBloc>(context).add(
+                        ChecklistDoneHabitEvent(
+                            List<CheckListModel>.from(habit.checkList!),
+                            // habit.checkList!
+                            //     .map((CheckListEntity checkItem) =>
+                            //         CheckListModel.fromEntity(checkItem))
+                            //     .toList(),
+
+                            habitCode: habit.id));
                   },
                   child: Ink(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -204,7 +215,7 @@ class CheckListWidget extends StatelessWidget {
                               child: child,
                             );
                           },
-                          child: checkItem.done
+                          child: habit.checkList![i].done
                               ? Image.asset('assets/png/diamond_done.png',
                                   height: 25.0)
                               : Image.asset(
@@ -215,13 +226,12 @@ class CheckListWidget extends StatelessWidget {
                         const SizedBox(width: 15.0),
                         Expanded(
                           child: AutoSizeText(
-                            checkItem.name,
+                            habit.checkList![i].name,
                             maxLines: 1,
                             textAlign: TextAlign.start,
                             style: const TextStyle(
                               fontSize: 20.0,
                               color: Colors.white,
-                              // fontWeight: FontWeight.bold,
                             ),
                             minFontSize: 10.0,
                             overflow: TextOverflow.ellipsis,

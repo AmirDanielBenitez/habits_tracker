@@ -1,3 +1,4 @@
+import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 
 abstract class HabitRepository {
@@ -15,4 +16,6 @@ abstract class HabitRepository {
   Future<bool> deleteHabit(int habitCode);
 
   Future<bool> doneHabit(bool done, int habitCode);
+
+  Future<bool> checkListDone(List<CheckListModel> checkList, int habitCode);
 }

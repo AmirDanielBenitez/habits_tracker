@@ -1,4 +1,6 @@
 import 'package:habits_tracker/core/usecase/usecase.dart';
+import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
+import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/repository/habit_repository.dart';
 
@@ -30,5 +32,10 @@ class HabitUseCase implements UseCase<List<HabitEntity>, void> {
 
   Future<bool> done(bool done, {required int habitCode}) {
     return _habitRepository.doneHabit(done, habitCode);
+  }
+
+  Future<bool> checkListDone(List<CheckListModel> checkList,
+      {required int habitCode}) {
+    return _habitRepository.checkListDone(checkList, habitCode);
   }
 }

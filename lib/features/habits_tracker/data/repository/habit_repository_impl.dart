@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/database.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/habit_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/repository/habit_repository.dart';
 import 'package:habits_tracker/injection_container.dart';
+import 'package:collection/collection.dart';
 
 class HabitRepositoryImpl implements HabitRepository {
   HabitRepositoryImpl();
@@ -37,16 +39,30 @@ class HabitRepositoryImpl implements HabitRepository {
               ..write(
                 HabitItemsCompanion(
                   done: const Value(false),
+                  checkList: Value(habit.checkList?.isNotEmpty ?? false
+                      ? habit.checkList!.map((item) {
+                          return CheckListModel(name: item.name, done: false);
+                        }).toList()
+                      : null),
                   lastEdited: Value(DateTime.now()),
                 ),
               );
           } else {
+            bool wasSpecificDayDone = false;
+            bool isTodaySpecificDay = false;
+            if (habit.done && habit.specificDays != null) {
+              final String day =
+                  kDaysInWeek[habit.lastEdited.weekday - 1].dayName;
+              wasSpecificDayDone = habit.specificDays!.contains(day);
+              isTodaySpecificDay = habit.specificDays!.contains(kDaysInWeek[DateTime.now().weekday].dayName);
+            }
             sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
               ..where((tbl) => tbl.id.equals(habit.id))
               ..write(
                 HabitItemsCompanion(
-                  done: const Value(false),
-                  streak: const Value(0),
+                  done:  Value(wasSpecificDayDone ? ?habit.done : false),
+                  streak: Value(
+                      wasSpecificDayDone && habit.done ? habit.streak : 0),
                   lastEdited: Value(DateTime.now()),
                 ),
               );
@@ -141,6 +157,43 @@ class HabitRepositoryImpl implements HabitRepository {
                 : habitItem.streak > 0
                     ? (habitItem.streak - 1)
                     : 0),
+            lastEdited: Value(DateTime.now()),
+          ),
+        );
+
+      return Future.value(true);
+    } catch (e) {
+      return Future.value(false);
+    }
+  }
+
+  @override
+  Future<bool> checkListDone(
+      List<CheckListModel> checkList, int habitCode) async {
+    try {
+      final habitToUpdate = sl<AppDatabase>()
+          .select(sl<AppDatabase>().habitItems)
+        ..where((tbl) => tbl.id.equals(habitCode));
+
+      final HabitItem habitItem = await habitToUpdate.getSingle();
+
+      final bool done =
+          (checkList.firstWhereOrNull((element) => element.done == false) ==
+              null);
+
+      sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+        ..where((tbl) => tbl.id.equals(habitCode))
+        ..write(
+          HabitItemsCompanion(
+            done: Value(done),
+            streak: Value(done
+                ? (habitItem.streak + 1)
+                : habitItem.done && !done
+                    ? (habitItem.streak - 1)
+                    : habitItem.streak),
+            checkList: Value(
+              checkList,
+            ),
             lastEdited: Value(DateTime.now()),
           ),
         );

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:habits_tracker/core/resources/helper.dart';
+import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/usecases/habit_usecase.dart';
 
@@ -16,6 +17,7 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
     on<EditHabitEvent>(_onEditHabitEvent);
     on<DeleteHabitEvent>(_onDeleteHabitEvent);
     on<DoneHabitEvent>(_onDoneHabitEvent);
+    on<ChecklistDoneHabitEvent>(_onChecklistDoneHabitEvent);
   }
 
   Future<void> _onLoadHabitsEvent(
@@ -123,6 +125,31 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       } else {
         emit(HabitsLoaded(habits));
         showToast('Habit not done', error: true);
+      }
+    } catch (e) {
+      print(e);
+      showToast('Habit not done', error: true);
+    }
+  }
+
+  Future<void> _onChecklistDoneHabitEvent(
+      ChecklistDoneHabitEvent event, Emitter<HabitsState> emit) async {
+    try {
+      List<HabitEntity> habits = [];
+      if (state is HabitsLoaded) {
+        habits = (state as HabitsLoaded).habits;
+      }
+      emit(HabitsLoading());
+
+      final bool done = await _habitUseCase.checkListDone(event.checkList,
+          habitCode: event.habitCode);
+      if (done) {
+        final List<HabitEntity> habitsUpdated = await _habitUseCase();
+        emit(HabitsLoaded(habitsUpdated));
+        // showToast('Habit checklist item done');
+      } else {
+        emit(HabitsLoaded(habits));
+        showToast('Habit checklist item not done', error: true);
       }
     } catch (e) {
       print(e);
