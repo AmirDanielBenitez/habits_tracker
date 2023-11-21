@@ -258,7 +258,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                         Visibility(
                           visible: !repeatsEveryday,
                           child: SelectWeekDays(
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                             days: kDaysInWeek,
                             border: false,

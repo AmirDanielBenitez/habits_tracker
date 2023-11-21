@@ -247,7 +247,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                         Visibility(
                           visible: !repeatsEveryday,
                           child: SelectWeekDays(
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                             days: kDaysInWeek,
                             border: false,
