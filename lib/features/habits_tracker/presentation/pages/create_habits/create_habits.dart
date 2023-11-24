@@ -84,7 +84,6 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                   specificDays: repeatsEveryday ? null : specificDays,
                   done: false,
                   streak: 0,
-                  lastEdited: DateTime.now(),
                 );
                 print('Habit name: ${habit.name}');
                 print('Habit color: ${habit.color}');
@@ -180,90 +179,92 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                   width: double.infinity,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Checklist',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Visibility(
-                          visible: checklist.isNotEmpty,
-                          child: SizedBox(
-                            height: (checklist.length + 1) * 41.0,
-                            child: checkListView(),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Checklist',
+                            style: TextStyle(color: Colors.grey.shade700),
                           ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: PrimaryButton(
-                            text: 'New checklist item',
-                            onTap: () {
-                              final int newIndex = checklist.length + 1;
-
-                              setState(() {
-                                checklist.add(CheckListEntity(
-                                    name:
-                                        '${getIndexText(newIndex)} checklist'));
-                              });
-                            },
+                          const SizedBox(height: 5.0),
+                          Visibility(
+                            visible: checklist.isNotEmpty,
+                            child: SizedBox(
+                              height: (checklist.length + 1) * 41.0,
+                              child: checkListView(),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          'Daytime',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Container(
-                          height: 36.0,
-                          decoration: ShapeDecoration(
-                              shape: const StadiumBorder(),
-                              color: kBackgroundColor),
-                          clipBehavior: Clip.antiAlias,
-                          child: Row(
-                            children: getDayTimeToggles,
-                          ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text(
-                          'Repeats',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                        const SizedBox(height: 5.0),
-                        SizedBox(
+                          SizedBox(
                             width: double.infinity,
                             child: PrimaryButton(
-                                onTap: () {
-                                  setState(() {
-                                    repeatsEveryday = !repeatsEveryday;
-                                  });
-                                },
-                                text: repeatsEveryday
-                                    ? 'Everyday'
-                                    : 'Custom days')),
-                        const SizedBox(height: 5.0),
-                        Visibility(
-                          visible: !repeatsEveryday,
-                          child: SelectWeekDays(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            days: kDaysInWeek,
-                            border: false,
-                            boxDecoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(kBorderRadious),
-                                color: kBackgroundColor),
-                            daysFillColor: kAccentColor,
-                            selectedDayTextColor: Colors.white,
-                            unSelectedDayTextColor: Colors.white,
-                            onSelect: (values) {
-                              specificDays = values;
-                            },
+                              text: 'New checklist item',
+                              onTap: () {
+                                final int newIndex = checklist.length + 1;
+
+                                setState(() {
+                                  checklist.add(CheckListEntity(
+                                      name:
+                                          '${getIndexText(newIndex)} checklist'));
+                                });
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 5.0),
+                          Text(
+                            'Daytime',
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Container(
+                            height: 36.0,
+                            decoration: ShapeDecoration(
+                                shape: const StadiumBorder(),
+                                color: kBackgroundColor),
+                            clipBehavior: Clip.antiAlias,
+                            child: Row(
+                              children: getDayTimeToggles,
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            'Repeats',
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(height: 5.0),
+                          SizedBox(
+                              width: double.infinity,
+                              child: PrimaryButton(
+                                  onTap: () {
+                                    setState(() {
+                                      repeatsEveryday = !repeatsEveryday;
+                                    });
+                                  },
+                                  text: repeatsEveryday
+                                      ? 'Everyday'
+                                      : 'Custom days')),
+                          const SizedBox(height: 5.0),
+                          Visibility(
+                            visible: !repeatsEveryday,
+                            child: SelectWeekDays(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              days: kDaysInWeek,
+                              border: false,
+                              boxDecoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(kBorderRadious),
+                                  color: kBackgroundColor),
+                              daysFillColor: kAccentColor,
+                              selectedDayTextColor: Colors.white,
+                              unSelectedDayTextColor: Colors.white,
+                              onSelect: (values) {
+                                specificDays = values;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

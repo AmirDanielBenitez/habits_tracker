@@ -1,6 +1,5 @@
 import 'package:habits_tracker/core/usecase/usecase.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
-import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/repository/habit_repository.dart';
 

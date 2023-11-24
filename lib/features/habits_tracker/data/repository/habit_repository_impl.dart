@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:drift/drift.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
 import 'package:habits_tracker/core/database.dart';
+import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/habit_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
@@ -26,46 +26,106 @@ class HabitRepositoryImpl implements HabitRepository {
       List<HabitItem> allHabitItems =
           await sl<AppDatabase>().select(sl<AppDatabase>().habitItems).get();
 
-      final now = DateTime.now();
-      final yesterday = DateTime(now.year, now.month, now.day - 1);
+      final DateTime now = DateTime.now();
+      final DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
 
       for (HabitItem habit in allHabitItems) {
-        if (habit.lastEdited.year < now.year ||
-            habit.lastEdited.month < now.month ||
-            habit.lastEdited.day < now.day) {
-          if (habit.done && !habit.lastEdited.isBefore(yesterday)) {
-            sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
-              ..where((tbl) => tbl.id.equals(habit.id))
-              ..write(
-                HabitItemsCompanion(
-                  done: const Value(false),
-                  checkList: Value(habit.checkList?.isNotEmpty ?? false
-                      ? habit.checkList!.map((item) {
-                          return CheckListModel(name: item.name, done: false);
-                        }).toList()
-                      : null),
-                  lastEdited: Value(DateTime.now()),
-                ),
-              );
-          } else {
-            bool wasSpecificDayDone = false;
-            bool isTodaySpecificDay = false;
-            if (habit.done && habit.specificDays != null) {
-              final String day =
-                  kDaysInWeek[habit.lastEdited.weekday - 1].dayName;
-              wasSpecificDayDone = habit.specificDays!.contains(day);
-              isTodaySpecificDay = habit.specificDays!.contains(kDaysInWeek[DateTime.now().weekday].dayName);
+        if (habit.lastDone != null) {
+          if (habit.lastDone!.year < now.year ||
+              habit.lastDone!.month < now.month ||
+              habit.lastDone!.day < now.day) {
+            if (!habit.lastDone!.isBefore(yesterday)) {
+              sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+                ..where((tbl) => tbl.id.equals(habit.id))
+                ..write(
+                  HabitItemsCompanion(
+                    done: const Value(false),
+                    checkList: Value(habit.checkList?.isNotEmpty ?? false
+                        ? habit.checkList!.map((item) {
+                            return CheckListModel(name: item.name, done: false);
+                          }).toList()
+                        : null),
+                  ),
+                );
+            } else {
+              if (habit.specificDays == null || habit.specificDays == 'null') {
+                sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+                  ..where((tbl) => tbl.id.equals(habit.id))
+                  ..write(
+                    HabitItemsCompanion(
+                      done: const Value(false),
+                      checkList: Value(habit.checkList?.isNotEmpty ?? false
+                          ? habit.checkList!.map((item) {
+                              return CheckListModel(
+                                  name: item.name, done: false);
+                            }).toList()
+                          : null),
+                      streak: const Value(0),
+                    ),
+                  );
+              } else {
+                DateTime lastDone = habit.lastDone!;
+                final int differenceDays = now.difference(lastDone).inDays;
+                if (differenceDays > 7) {
+                  sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+                    ..where((tbl) => tbl.id.equals(habit.id))
+                    ..write(
+                      HabitItemsCompanion(
+                        done: const Value(false),
+                        checkList: Value(habit.checkList?.isNotEmpty ?? false
+                            ? habit.checkList!.map((item) {
+                                return CheckListModel(
+                                    name: item.name, done: false);
+                              }).toList()
+                            : null),
+                        streak: const Value(0),
+                      ),
+                    );
+                } else {
+                  bool loseStreak = false;
+                  List<int> daysSequence =
+                      getDaysSequence(lastDone.weekday, differenceDays - 1);
+                  for (int day in daysSequence) {
+                    if (List<String>.from(json.decode(habit.specificDays!))
+                        .contains(kDaysInWeek[(day - 1) as int].dayKey)) {
+                      loseStreak = true;
+                      break;
+                    }
+                  }
+
+                  if (loseStreak) {
+                    sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+                      ..where((tbl) => tbl.id.equals(habit.id))
+                      ..write(
+                        HabitItemsCompanion(
+                          done: const Value(false),
+                          checkList: Value(habit.checkList?.isNotEmpty ?? false
+                              ? habit.checkList!.map((item) {
+                                  return CheckListModel(
+                                      name: item.name, done: false);
+                                }).toList()
+                              : null),
+                          streak: const Value(0),
+                        ),
+                      );
+                  } else {
+                    sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
+                      ..where((tbl) => tbl.id.equals(habit.id))
+                      ..write(
+                        HabitItemsCompanion(
+                          done: const Value(false),
+                          checkList: Value(habit.checkList?.isNotEmpty ?? false
+                              ? habit.checkList!.map((item) {
+                                  return CheckListModel(
+                                      name: item.name, done: false);
+                                }).toList()
+                              : null),
+                        ),
+                      );
+                  }
+                }
+              }
             }
-            sl<AppDatabase>().update(sl<AppDatabase>().habitItems)
-              ..where((tbl) => tbl.id.equals(habit.id))
-              ..write(
-                HabitItemsCompanion(
-                  done:  Value(wasSpecificDayDone ? ?habit.done : false),
-                  streak: Value(
-                      wasSpecificDayDone && habit.done ? habit.streak : 0),
-                  lastEdited: Value(DateTime.now()),
-                ),
-              );
           }
         }
       }
@@ -157,7 +217,7 @@ class HabitRepositoryImpl implements HabitRepository {
                 : habitItem.streak > 0
                     ? (habitItem.streak - 1)
                     : 0),
-            lastEdited: Value(DateTime.now()),
+            lastDone: Value(DateTime.now()),
           ),
         );
 
@@ -194,7 +254,7 @@ class HabitRepositoryImpl implements HabitRepository {
             checkList: Value(
               checkList,
             ),
-            lastEdited: Value(DateTime.now()),
+            lastDone: Value(DateTime.now()),
           ),
         );
 

@@ -15,7 +15,7 @@ class HabitModel extends HabitEntity {
     final List<CheckListEntity>? checkList,
     final DayTimeHabit dayTime = DayTimeHabit.anytime,
     final List<String>? specificDays,
-    required DateTime lastEdited,
+    required DateTime? lastDone,
   }) : super(
           id: id,
           done: done ?? false,
@@ -25,7 +25,7 @@ class HabitModel extends HabitEntity {
           checkList: checkList,
           dayTime: dayTime,
           specificDays: specificDays,
-          lastEdited: lastEdited,
+          lastDone: lastDone,
         );
 
   factory HabitModel.fromJson(Map<String, dynamic> map) {
@@ -37,7 +37,7 @@ class HabitModel extends HabitEntity {
       color: map['color'],
       checkList: map['check_list'],
       specificDays: map['specific_days'],
-      lastEdited: map['lastEdited'],
+      lastDone: map['lastDone'],
     );
   }
 
@@ -51,7 +51,7 @@ class HabitModel extends HabitEntity {
       checkList: entity.checkList,
       dayTime: entity.dayTime,
       specificDays: entity.specificDays,
-      lastEdited: entity.lastEdited,
+      lastDone: entity.lastDone,
     );
   }
   factory HabitModel.fromItem(HabitItem item) {
@@ -66,7 +66,7 @@ class HabitModel extends HabitEntity {
       specificDays: item.specificDays != 'null'
           ? List<String>.from(json.decode(item.specificDays!))
           : null,
-      lastEdited: item.lastEdited,
+      lastDone: item.lastDone,
     );
   }
 }

@@ -42,3 +42,22 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
     }
   }
 }
+
+List<int> getDaysSequence(int lastDone, int differenceDays) {
+  const int maxSequenceLength = 7;
+  List<int> secuencia = [1, 2, 3, 4, 5, 6, 7];
+  int rotationIndex = lastDone % maxSequenceLength;
+
+  if (differenceDays > maxSequenceLength) {
+    differenceDays = maxSequenceLength;
+  } else if (differenceDays < 1) {
+    differenceDays = 1;
+  }
+
+  List<int> resultado = [
+    ...secuencia.sublist(rotationIndex),
+    ...secuencia.sublist(0, rotationIndex)
+  ].take(differenceDays).toList();
+
+  return resultado;
+}

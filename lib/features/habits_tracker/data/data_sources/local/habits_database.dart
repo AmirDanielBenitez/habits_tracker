@@ -19,8 +19,7 @@ class HabitItems extends Table {
   IntColumn get dayTime =>
       intEnum<DayTimeHabit>().withDefault(const Constant(0))();
   TextColumn get specificDays => text().nullable()();
-  DateTimeColumn get lastEdited =>
-      dateTime().clientDefault(() => DateTime.now())();
+  DateTimeColumn get lastDone => dateTime().nullable()();
 }
 
 class CheckListConverter extends TypeConverter<List<CheckListModel>, String> {
