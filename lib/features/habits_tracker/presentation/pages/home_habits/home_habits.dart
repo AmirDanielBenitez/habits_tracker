@@ -49,7 +49,9 @@ class _HomeHabitsState extends State<HomeHabits> {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/config-page');
+              },
               iconSize: 25.0,
               icon: const Icon(
                 AppIcons.config,

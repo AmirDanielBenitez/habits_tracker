@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habits_tracker/features/config_page/presentation/pages/config_page/config_page.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/pages/create_habits/create_habits.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/pages/edit_habits/edit_habits.dart';
@@ -15,6 +16,8 @@ class AppRoutes {
         return _materialRoute(EditHabitsPage(
           habit: settings.arguments as HabitEntity,
         ));
+      case '/config-page':
+        return _materialRoute(const ConfigPage());
       default:
         return _materialRoute(const HomeHabits());
     }

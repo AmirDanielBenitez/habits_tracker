@@ -2,11 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
-import 'package:svg_icon/svg_icon.dart';
 
 import '../../../../core/constants/constants.dart';
 
@@ -132,7 +132,7 @@ class _HabitTileState extends State<HabitTile> {
                                 fontSize: 20.0),
                           ),
                           const SizedBox(width: 5.0),
-                          const SvgIcon(
+                          SvgPicture.asset(
                             'assets/svg/diamond_done.svg',
                             color: Colors.white,
                             height: 15.0,
