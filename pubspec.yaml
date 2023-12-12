@@ -100,6 +100,8 @@ dev_dependencies:
   build_runner: ^2.4.6
   # Logo
   flutter_launcher_icons: "^0.13.1"
+  # Splash
+  flutter_native_splash: ^2.3.7
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -107,6 +109,12 @@ flutter_launcher_icons:
   image_path: "assets/logo/ht_logo.png"
   min_sdk_android: 21
   remove_alpha_ios: true
+flutter_native_splash:
+  color: "#6527be"
+  # background_image: "assets/logo/logo_white.png"
+  image: "assets/logo/splash_logo.png"
+  # branding: "assets/logo/splash_logo.png"
+  web: false
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

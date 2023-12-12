@@ -10,3 +10,9 @@ A few resources to get you started if this is your first Flutter project:
 
 Si se edito un archivo del database correr el comando
 'dart run build_runner build'
+
+Para cambiar el logo
+'flutter pub run flutter_launcher_icons'
+
+Para cambiar el splash
+'dart run flutter_native_splash:create'
