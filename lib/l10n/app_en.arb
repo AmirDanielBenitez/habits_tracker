@@ -16,7 +16,7 @@
   "habitName": "Habit Name",
   "@habitName": {},
 
-  "checklist": "{count,plural, =1{checklist} other{{count} Checklist}}",
+  "checklist": "{count,plural, =0{Checklist} other{{count} Checklist}}",
   "@checklist": {
     "placeholders": {
       "count": {}
@@ -60,5 +60,8 @@
   "@habitcreated": {},
 
   "habitnotcreated": "Habit not created",
-  "@habitnotcreated": {}
+  "@habitnotcreated": {},
+
+  "habitnameisempty": "Habit name is empty",
+  "@habitnameisempty": {}
 }

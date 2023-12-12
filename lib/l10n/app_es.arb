@@ -35,5 +35,7 @@
 
     "habitcreated": "Habito creado",
 
-    "habitnotcreated": "Habito no creado"
+    "habitnotcreated": "Habito no creado",
+
+    "habitnameisempty": "Nombre del habito vacio"
 }

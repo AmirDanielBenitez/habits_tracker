@@ -81,26 +81,28 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
         actions: [
           TextButton(
               onPressed: () {
-                //#TODO
-                //agregar advertencia de campos obligatorios
-                final HabitEntity habit = HabitEntity(
-                  id: 0,
-                  name: habitName,
-                  color: habitColor,
-                  checkList: checklist,
-                  dayTime: dayTime,
-                  specificDays: repeatsEveryday ? null : specificDays,
-                  done: false,
-                  streak: 0,
-                );
-                print('Habit name: ${habit.name}');
-                print('Habit color: ${habit.color}');
-                print('Habit checkList: ${habit.checkList}');
-                print('Habit dayTime: ${habit.dayTime}');
-                print('Habit specificDays: ${habit.specificDays}');
-                BlocProvider.of<HabitsBloc>(context)
-                    .add(CreateHabitEvent(habit));
-                Navigator.pop(context);
+                if (habitName.trim() != '') {
+                  final HabitEntity habit = HabitEntity(
+                    id: 0,
+                    name: habitName,
+                    color: habitColor,
+                    checkList: checklist,
+                    dayTime: dayTime,
+                    specificDays: repeatsEveryday ? null : specificDays,
+                    done: false,
+                    streak: 0,
+                  );
+                  print('Habit name: ${habit.name}');
+                  print('Habit color: ${habit.color}');
+                  print('Habit checkList: ${habit.checkList}');
+                  print('Habit dayTime: ${habit.dayTime}');
+                  print('Habit specificDays: ${habit.specificDays}');
+                  BlocProvider.of<HabitsBloc>(context)
+                      .add(CreateHabitEvent(habit));
+                  Navigator.pop(context);
+                } else {
+                  showToast(ln(context).habitnameisempty, error: true);
+                }
               },
               child: Text(
                 ln(context).create,
