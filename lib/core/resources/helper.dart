@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:habits_tracker/core/database.dart';
+import 'package:habits_tracker/features/config_page/presentation/bloc/bloc/config_bloc.dart';
+import 'package:habits_tracker/injection_container.dart';
 
 showToast(String text, {bool error = false}) {
   Fluttertoast.showToast(
@@ -60,4 +64,22 @@ List<int> getDaysSequence(int lastDone, int differenceDays) {
   ].take(differenceDays).toList();
 
   return resultado;
+}
+
+AppLocalizations ln(BuildContext context) {
+  return AppLocalizations.of(context)!;
+}
+
+getLocale(ConfigState state) {
+  try {
+    if (state is ConfigLoaded && state.config.locale != null) {
+      return Locale(state.config.locale!);
+    }
+    if (sl<ConfigItem>().locale != null) {
+      return Locale(sl<ConfigItem>().locale!);
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
 }

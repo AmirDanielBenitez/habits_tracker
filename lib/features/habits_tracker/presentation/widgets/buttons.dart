@@ -15,12 +15,16 @@ class PrimaryButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: color ?? kAccentColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kBorderRadious),
+        ),
       ),
       onPressed: onTap,
       child: text != null
           ? Text(
               text!,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
             )
           : icon,
     );
@@ -45,7 +49,7 @@ class DayTimeToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 36.0,
+      height: 50.0,
       decoration:
           ShapeDecoration(shape: const StadiumBorder(), color: kPrimaryColor),
       clipBehavior: Clip.antiAlias,
@@ -58,7 +62,7 @@ class DayTimeToggle extends StatelessWidget {
                 color: dayTime == DayTimeHabitHome.anytime
                     ? kAccentColor
                     : Colors.transparent,
-                child: Center(child: daytimesList[0])),
+                child: Center(child: getDayTime(context, index: 0))),
           )),
           Expanded(
               child: InkWell(
@@ -67,7 +71,7 @@ class DayTimeToggle extends StatelessWidget {
                 color: dayTime == DayTimeHabitHome.morning
                     ? kAccentColor
                     : Colors.transparent,
-                child: Center(child: daytimesList[1])),
+                child: Center(child: getDayTime(context, index: 1))),
           )),
           Expanded(
               child: InkWell(
@@ -76,7 +80,7 @@ class DayTimeToggle extends StatelessWidget {
                 color: dayTime == DayTimeHabitHome.afternoon
                     ? kAccentColor
                     : Colors.transparent,
-                child: Center(child: daytimesList[2])),
+                child: Center(child: getDayTime(context, index: 2))),
           )),
           Expanded(
               child: InkWell(
@@ -85,7 +89,7 @@ class DayTimeToggle extends StatelessWidget {
                 color: dayTime == DayTimeHabitHome.evening
                     ? kAccentColor
                     : Colors.transparent,
-                child: Center(child: daytimesList[3])),
+                child: Center(child: getDayTime(context, index: 3))),
           )),
         ],
       ),

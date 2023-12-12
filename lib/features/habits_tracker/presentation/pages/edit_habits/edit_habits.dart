@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
+import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
@@ -101,6 +102,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
         onPressed: () {
           BlocProvider.of<HabitsBloc>(context)
               .add(DeleteHabitEvent(widget.habit.id));
@@ -125,9 +127,9 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          'Habit Name',
-                          style: TextStyle(color: Colors.white),
+                        Text(
+                          ln(context).habitName,
+                          style: const TextStyle(color: Colors.white),
                         ),
                         const SizedBox(height: 5.0),
                         Container(
@@ -196,7 +198,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Checklist',
+                            ln(context).checklist(0),
                             style: TextStyle(color: Colors.grey.shade700),
                           ),
                           const SizedBox(height: 5.0),
@@ -210,21 +212,21 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                           SizedBox(
                             width: double.infinity,
                             child: PrimaryButton(
-                              text: 'New checklist item',
+                              text: ln(context).newCheckListItem,
                               onTap: () {
                                 final int newIndex = checklist.length + 1;
 
                                 setState(() {
                                   checklist.add(CheckListEntity(
                                       name:
-                                          '${getIndexText(newIndex)} checklist'));
+                                          '${getIndexText(newIndex)} ${ln(context).checklist(1)}'));
                                 });
                               },
                             ),
                           ),
                           const SizedBox(height: 5.0),
                           Text(
-                            'Daytime',
+                            ln(context).daytime,
                             style: TextStyle(color: Colors.grey.shade700),
                           ),
                           const SizedBox(height: 5.0),
@@ -240,28 +242,33 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                           ),
                           const SizedBox(height: 5.0),
                           Text(
-                            'Repeats',
+                            ln(context).repeats,
                             style: TextStyle(color: Colors.grey.shade700),
                           ),
                           const SizedBox(height: 5.0),
                           SizedBox(
                               width: double.infinity,
                               child: PrimaryButton(
-                                  onTap: () {
-                                    setState(() {
-                                      repeatsEveryday = !repeatsEveryday;
-                                    });
-                                  },
-                                  text: repeatsEveryday
-                                      ? 'Everyday'
-                                      : 'Custom days')),
+                                onTap: () {
+                                  setState(() {
+                                    repeatsEveryday = !repeatsEveryday;
+                                  });
+                                },
+                                text: repeatsEveryday
+                                    ? ln(context).everyday
+                                    : ln(context).customDays,
+                              )),
                           const SizedBox(height: 5.0),
                           Visibility(
                             visible: !repeatsEveryday,
                             child: SelectWeekDays(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              days: kDaysInWeek,
+                              days: Localizations.localeOf(context)
+                                          .languageCode ==
+                                      'en'
+                                  ? kDaysInWeek
+                                  : kDaysInWeekES,
                               border: false,
                               boxDecoration: BoxDecoration(
                                   borderRadius:
@@ -291,16 +298,18 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
   List<Widget> get getDayTimeToggles {
     return [
       Expanded(
-          child: InkWell(
-        onTap: () => setState(() {
-          dayTime = DayTimeHabit.anytime;
-        }),
-        child: Container(
+        child: InkWell(
+          onTap: () => setState(() {
+            dayTime = DayTimeHabit.anytime;
+          }),
+          child: Container(
             color: dayTime == DayTimeHabit.anytime
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[0])),
-      )),
+            child: Center(child: getDayTime(context, index: 0)),
+          ),
+        ),
+      ),
       Expanded(
           child: InkWell(
         onTap: () => setState(() {
@@ -310,7 +319,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
             color: dayTime == DayTimeHabit.morning
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[1])),
+            child: Center(child: getDayTime(context, index: 1))),
       )),
       Expanded(
           child: InkWell(
@@ -321,7 +330,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
             color: dayTime == DayTimeHabit.afternoon
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[2])),
+            child: Center(child: getDayTime(context, index: 2))),
       )),
       Expanded(
           child: InkWell(
@@ -332,7 +341,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
             color: dayTime == DayTimeHabit.evening
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[3])),
+            child: Center(child: getDayTime(context, index: 3))),
       )),
     ];
   }
@@ -366,9 +375,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                 Expanded(
                     child: TextField(
                   onChanged: (text) {
-                    // setState(() {
                     checklist[i] = CheckListEntity(name: text);
-                    // });
                   },
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),

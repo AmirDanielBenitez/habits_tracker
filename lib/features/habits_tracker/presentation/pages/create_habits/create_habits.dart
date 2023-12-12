@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habits_tracker/core/constants/constants.dart';
+import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/core/resources/icons/app_icons.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/check_list.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
@@ -22,24 +23,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   late Color habitColor;
   final List<CheckListEntity> checklist = [];
   DayTimeHabit dayTime = DayTimeHabit.anytime;
-  final List<Widget> daytimesList = [
-    const Text(
-      'Anytime',
-      style: TextStyle(color: Colors.white),
-    ),
-    const Text(
-      'Morning',
-      style: TextStyle(color: Colors.white),
-    ),
-    const Text(
-      'Afternoon',
-      style: TextStyle(color: Colors.white),
-    ),
-    const Text(
-      'Evening',
-      style: TextStyle(color: Colors.white),
-    ),
-  ];
+  late List<Widget> daytimesList = [];
 
   bool repeatsEveryday = true;
 
@@ -48,6 +32,29 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        daytimesList = [
+          Text(
+            ln(context).anytime,
+            style: const TextStyle(color: Colors.white),
+          ),
+          Text(
+            ln(context).morning,
+            style: const TextStyle(color: Colors.white),
+          ),
+          Text(
+            ln(context).afternoon,
+            style: const TextStyle(color: Colors.white),
+          ),
+          Text(
+            ln(context).evening,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ];
+      });
+    });
     habitColor =
         Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   }
@@ -56,9 +63,10 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Create Habit',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          ln(context).createHabit,
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           onPressed: () {
@@ -94,10 +102,10 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                     .add(CreateHabitEvent(habit));
                 Navigator.pop(context);
               },
-              child: const Text(
-                'Create',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              child: Text(
+                ln(context).create,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ))
         ],
       ),
@@ -105,172 +113,182 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SafeArea(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
+          child: daytimesList.isNotEmpty
+              ? Column(
+                  children: [
+                    Row(
                       children: [
-                        const Text(
-                          'Habit Name',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          width: double.infinity,
-                          height: 36.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(kBorderRadious),
-                            color: Colors.white,
-                          ),
-                          child: TextField(
-                            onChanged: (text) {
-                              setState(() {
-                                habitName = text;
-                              });
-                            },
-                            cursorColor: kAccentColor,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Color',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 5.0),
-                      SizedBox(
-                        height: 36.0,
-                        child: PrimaryButton(
-                          icon: Icon(
-                            habitColor == null
-                                ? Icons.shuffle_rounded
-                                : Icons.brush_rounded,
-                          ),
-                          color: habitColor,
-                          onTap: () {
-                            _showColorPicker();
-                          },
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              Expanded(
-                  child: Card(
-                margin: EdgeInsets.zero,
-                color: Colors.white,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Checklist',
-                            style: TextStyle(color: Colors.grey.shade700),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Visibility(
-                            visible: checklist.isNotEmpty,
-                            child: SizedBox(
-                              height: (checklist.length + 1) * 41.0,
-                              child: checkListView(),
-                            ),
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: PrimaryButton(
-                              text: 'New checklist item',
-                              onTap: () {
-                                final int newIndex = checklist.length + 1;
-
-                                setState(() {
-                                  checklist.add(CheckListEntity(
-                                      name:
-                                          '${getIndexText(newIndex)} checklist'));
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            'Daytime',
-                            style: TextStyle(color: Colors.grey.shade700),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Container(
-                            height: 36.0,
-                            decoration: ShapeDecoration(
-                                shape: const StadiumBorder(),
-                                color: kBackgroundColor),
-                            clipBehavior: Clip.antiAlias,
-                            child: Row(
-                              children: getDayTimeToggles,
-                            ),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            'Repeats',
-                            style: TextStyle(color: Colors.grey.shade700),
-                          ),
-                          const SizedBox(height: 5.0),
-                          SizedBox(
-                              width: double.infinity,
-                              child: PrimaryButton(
-                                  onTap: () {
-                                    setState(() {
-                                      repeatsEveryday = !repeatsEveryday;
-                                    });
-                                  },
-                                  text: repeatsEveryday
-                                      ? 'Everyday'
-                                      : 'Custom days')),
-                          const SizedBox(height: 5.0),
-                          Visibility(
-                            visible: !repeatsEveryday,
-                            child: SelectWeekDays(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              days: kDaysInWeek,
-                              border: false,
-                              boxDecoration: BoxDecoration(
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                ln(context).habitName,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(height: 5.0),
+                              Container(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                width: double.infinity,
+                                height: 36.0,
+                                decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.circular(kBorderRadious),
-                                  color: kBackgroundColor),
-                              daysFillColor: kAccentColor,
-                              selectedDayTextColor: Colors.white,
-                              unSelectedDayTextColor: Colors.white,
-                              onSelect: (values) {
-                                specificDays = values;
-                              },
+                                  color: Colors.white,
+                                ),
+                                child: TextField(
+                                  onChanged: (text) {
+                                    setState(() {
+                                      habitName = text;
+                                    });
+                                  },
+                                  cursorColor: kAccentColor,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Color',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(height: 5.0),
+                            SizedBox(
+                              height: 36.0,
+                              child: PrimaryButton(
+                                icon: Icon(
+                                  habitColor == null
+                                      ? Icons.shuffle_rounded
+                                      : Icons.brush_rounded,
+                                ),
+                                color: habitColor,
+                                onTap: () {
+                                  _showColorPicker();
+                                },
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    Expanded(
+                        child: Card(
+                      margin: EdgeInsets.zero,
+                      color: Colors.white,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ln(context).checklist(0),
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                                const SizedBox(height: 5.0),
+                                Visibility(
+                                  visible: checklist.isNotEmpty,
+                                  child: SizedBox(
+                                    height: (checklist.length + 1) * 41.0,
+                                    child: checkListView(),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: PrimaryButton(
+                                    text: ln(context).newCheckListItem,
+                                    onTap: () {
+                                      final int newIndex = checklist.length + 1;
+
+                                      setState(() {
+                                        checklist.add(CheckListEntity(
+                                            name:
+                                                '${getIndexText(newIndex)} ${ln(context).checklist(1)}'));
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 5.0),
+                                Text(
+                                  ln(context).daytime,
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                                const SizedBox(height: 5.0),
+                                Container(
+                                  height: 36.0,
+                                  decoration: ShapeDecoration(
+                                      shape: const StadiumBorder(),
+                                      color: kBackgroundColor),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Row(
+                                    children: getDayTimeToggles,
+                                  ),
+                                ),
+                                const SizedBox(height: 5.0),
+                                Text(
+                                  ln(context).repeats,
+                                  style: TextStyle(color: Colors.grey.shade700),
+                                ),
+                                const SizedBox(height: 5.0),
+                                SizedBox(
+                                    width: double.infinity,
+                                    child: PrimaryButton(
+                                      onTap: () {
+                                        setState(() {
+                                          repeatsEveryday = !repeatsEveryday;
+                                        });
+                                      },
+                                      text: repeatsEveryday
+                                          ? ln(context).everyday
+                                          : ln(context).customDays,
+                                    )),
+                                const SizedBox(height: 5.0),
+                                Visibility(
+                                  visible: !repeatsEveryday,
+                                  child: SelectWeekDays(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    days: Localizations.localeOf(context)
+                                                .languageCode ==
+                                            'en'
+                                        ? kDaysInWeek
+                                        : kDaysInWeekES,
+                                    border: false,
+                                    boxDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kBorderRadious),
+                                        color: kBackgroundColor),
+                                    daysFillColor: kAccentColor,
+                                    selectedDayTextColor: Colors.white,
+                                    unSelectedDayTextColor: Colors.white,
+                                    onSelect: (values) {
+                                      specificDays = values;
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    )),
+                  ],
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              )),
-            ],
-          ),
         ),
       ),
     );

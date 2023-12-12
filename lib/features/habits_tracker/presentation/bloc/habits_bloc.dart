@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:habits_tracker/core/database.dart';
 import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/usecases/habit_usecase.dart';
+import 'package:habits_tracker/injection_container.dart';
 
 part 'habits_event.dart';
 part 'habits_state.dart';
@@ -45,14 +47,25 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (created) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
-        showToast('Habit created');
+
+        showToast(sl<ConfigItem>().locale == 'es'
+            ? 'Habito creado'
+            : 'Habit created');
       } else {
         emit(HabitsLoaded(habits));
-        showToast('Habit not created', error: true);
+        showToast(
+            sl<ConfigItem>().locale == 'es'
+                ? 'Habito no creado'
+                : 'Habit not created',
+            error: true);
       }
     } catch (e) {
       print(e);
-      showToast('Habit not created', error: true);
+      showToast(
+          sl<ConfigItem>().locale == 'es'
+              ? 'Habito no creado'
+              : 'Habit not created',
+          error: true);
     }
   }
 
@@ -69,14 +82,24 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (edited) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
-        showToast('Habit edited');
+        showToast(sl<ConfigItem>().locale == 'es'
+            ? 'Habito editado'
+            : 'Habit edited');
       } else {
         emit(HabitsLoaded(habits));
-        showToast('Habit not edited', error: true);
+        showToast(
+            sl<ConfigItem>().locale == 'es'
+                ? 'Habito no editado'
+                : 'Habit not edited',
+            error: true);
       }
     } catch (e) {
       print(e);
-      showToast('Habit not edited', error: true);
+      showToast(
+          sl<ConfigItem>().locale == 'es'
+              ? 'Habito no editado'
+              : 'Habit not edited',
+          error: true);
     }
   }
 
@@ -95,15 +118,25 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (deleted) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
-        showToast('Habit deleted');
+        showToast(sl<ConfigItem>().locale == 'es'
+            ? 'Habito borrado'
+            : 'Habit deleted');
       } else {
         emit(HabitsLoaded(habits));
-        showToast('Habit not deleted', error: true);
+        showToast(
+            sl<ConfigItem>().locale == 'es'
+                ? 'Habito no borrado'
+                : 'Habit not deleted',
+            error: true);
       }
       emit(HabitsLoaded(habits));
     } catch (e) {
       print(e);
-      showToast('Habit not deleted', error: true);
+      showToast(
+          sl<ConfigItem>().locale == 'es'
+              ? 'Habito no borrado'
+              : 'Habit not deleted',
+          error: true);
     }
   }
 
@@ -121,14 +154,22 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       if (done) {
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
-        showToast('Habit done');
+        sl<ConfigItem>().locale == 'es' ? 'Habito hecho' : 'Habit done';
       } else {
         emit(HabitsLoaded(habits));
-        showToast('Habit not done', error: true);
+        showToast(
+            sl<ConfigItem>().locale == 'es'
+                ? 'Habito no hecho'
+                : 'Habit not done',
+            error: true);
       }
     } catch (e) {
       print(e);
-      showToast('Habit not done', error: true);
+      showToast(
+          sl<ConfigItem>().locale == 'es'
+              ? 'Habito no hecho'
+              : 'Habit not done',
+          error: true);
     }
   }
 
@@ -149,11 +190,19 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
         // showToast('Habit checklist item done');
       } else {
         emit(HabitsLoaded(habits));
-        showToast('Habit checklist item not done', error: true);
+        showToast(
+            sl<ConfigItem>().locale == 'es'
+                ? 'Habito tarea no hecho'
+                : 'Habit checklist item not done',
+            error: true);
       }
     } catch (e) {
       print(e);
-      showToast('Habit not done', error: true);
+      showToast(
+          sl<ConfigItem>().locale == 'es'
+              ? 'Habito tarea no hecho'
+              : 'Habit checklist item not done',
+          error: true);
     }
   }
 }

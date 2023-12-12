@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:drift/drift.dart';
+import 'package:habits_tracker/features/config_page/data/data_sources/local/config_database.dart';
 import 'package:habits_tracker/features/habits_tracker/data/data_sources/local/habits_database.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
 import 'package:habits_tracker/features/habits_tracker/domain/entities/habit.dart';
@@ -11,7 +12,7 @@ import 'package:path/path.dart' as p;
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [HabitItems])
+@DriftDatabase(tables: [HabitItems, ConfigItems])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

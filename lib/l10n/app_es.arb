@@ -1,0 +1,39 @@
+{
+    "createHabit": "Crear habito",
+    
+    "config": "Configuraciones",
+    
+    "language": "Lenguaje",
+
+    "create": "Crear",
+
+    "habitName": "Habito",
+
+    "checklist": "{count,plural, =1{tarea} other{Tareas}}",
+
+    "newCheckListItem": "Nueva tarea",
+
+    "daytime": "Hora del día",
+
+    "anytime": "Sin horario",
+
+    "morning": "Mañana",
+
+    "afternoon": "Siesta",
+
+    "evening": "Noche",
+
+    "repeats": "Repite",
+    
+    "everyday": "Todos los días",
+
+    "customDays": "Días especificos",
+
+    "all": "Todos",
+    
+    "habitsnotyetcreated": "No hay habitos creados",
+
+    "habitcreated": "Habito creado",
+
+    "habitnotcreated": "Habito no creado"
+}

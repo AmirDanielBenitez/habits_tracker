@@ -1,0 +1,64 @@
+{
+  "@@locale": "en",
+  
+  "createHabit": "Create Habit",
+  "@createHabit": {},
+
+  "config": "Configurations",
+  "@config": {},
+
+  "language": "Language",
+  "@language": {},
+  
+  "create": "Create",
+  "@create": {},
+
+  "habitName": "Habit Name",
+  "@habitName": {},
+
+  "checklist": "{count,plural, =1{checklist} other{{count} Checklist}}",
+  "@checklist": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+
+  "newCheckListItem": "New checklist item",
+  "@newCheckListItem": {},
+
+  "daytime": "Daytime",
+  "@daytime": {},
+
+  "anytime": "Anytime",
+  "@anytime": {},
+
+  "morning": "Morning",
+  "@morning": {},
+
+  "afternoon": "Afternoon",
+  "@afternoon": {},
+
+  "evening": "Evening",
+  "@evening": {},
+
+  "repeats": "Repeats",
+  "@repeats": {},
+
+  "everyday": "Everyday",
+  "@everyday": {},
+  
+  "customDays": "Custom days",
+  "@customDays": {},
+
+  "all": "All",
+  "@all": {},
+  
+  "habitsnotyetcreated": "Habits not yet created",
+  "@habitsnotyetcreated": {},
+
+  "habitcreated": "Habit created",
+  "@habitcreated": {},
+
+  "habitnotcreated": "Habit not created",
+  "@habitnotcreated": {}
+}

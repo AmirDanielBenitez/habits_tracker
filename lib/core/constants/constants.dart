@@ -1,5 +1,6 @@
 import 'package:day_picker/model/day_in_week.dart';
 import 'package:flutter/material.dart';
+import 'package:habits_tracker/core/resources/helper.dart';
 
 Color kBackgroundColor = const Color(0xff6527BE);
 Color kPrimaryColor = const Color(0xff9681EB);
@@ -37,21 +38,56 @@ final List<DayInWeek> kDaysInWeek = [
   ),
 ];
 
-final List<Widget> daytimesList = [
-  const Text(
-    'Anytime',
-    style: TextStyle(color: Colors.white),
+final List<DayInWeek> kDaysInWeekES = [
+  DayInWeek(
+    "Lun",
+    dayKey: 'Mon',
   ),
-  const Text(
-    'Morning',
-    style: TextStyle(color: Colors.white),
+  DayInWeek(
+    "Mar",
+    dayKey: 'Tue',
   ),
-  const Text(
-    'Afternoon',
-    style: TextStyle(color: Colors.white),
+  DayInWeek(
+    "Mie",
+    dayKey: 'Wed',
   ),
-  const Text(
-    'Evening',
-    style: TextStyle(color: Colors.white),
+  DayInWeek(
+    "Jue",
+    dayKey: 'Thu',
+  ),
+  DayInWeek(
+    "Vie",
+    dayKey: 'Fri',
+  ),
+  DayInWeek(
+    "Sab",
+    dayKey: 'Sat',
+  ),
+  DayInWeek(
+    "Dom",
+    dayKey: 'Sun',
   ),
 ];
+
+Widget getDayTime(BuildContext context, {required int index}) {
+  List<Widget> daytimesList = [
+    Text(
+      ln(context).anytime,
+      style: const TextStyle(color: Colors.white),
+    ),
+    Text(
+      ln(context).morning,
+      style: const TextStyle(color: Colors.white),
+    ),
+    Text(
+      ln(context).afternoon,
+      style: const TextStyle(color: Colors.white),
+    ),
+    Text(
+      ln(context).evening,
+      style: const TextStyle(color: Colors.white),
+    ),
+  ];
+
+  return daytimesList[index];
+}

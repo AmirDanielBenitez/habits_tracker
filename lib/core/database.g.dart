@@ -463,12 +463,184 @@ class HabitItemsCompanion extends UpdateCompanion<HabitItem> {
   }
 }
 
+class $ConfigItemsTable extends ConfigItems
+    with TableInfo<$ConfigItemsTable, ConfigItem> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ConfigItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _localeMeta = const VerificationMeta('locale');
+  @override
+  late final GeneratedColumn<String> locale = GeneratedColumn<String>(
+      'locale', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [id, locale];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'config';
+  @override
+  VerificationContext validateIntegrity(Insertable<ConfigItem> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('locale')) {
+      context.handle(_localeMeta,
+          locale.isAcceptableOrUnknown(data['locale']!, _localeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ConfigItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ConfigItem(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      locale: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}locale']),
+    );
+  }
+
+  @override
+  $ConfigItemsTable createAlias(String alias) {
+    return $ConfigItemsTable(attachedDatabase, alias);
+  }
+}
+
+class ConfigItem extends DataClass implements Insertable<ConfigItem> {
+  final int id;
+  final String? locale;
+  const ConfigItem({required this.id, this.locale});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || locale != null) {
+      map['locale'] = Variable<String>(locale);
+    }
+    return map;
+  }
+
+  ConfigItemsCompanion toCompanion(bool nullToAbsent) {
+    return ConfigItemsCompanion(
+      id: Value(id),
+      locale:
+          locale == null && nullToAbsent ? const Value.absent() : Value(locale),
+    );
+  }
+
+  factory ConfigItem.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ConfigItem(
+      id: serializer.fromJson<int>(json['id']),
+      locale: serializer.fromJson<String?>(json['locale']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'locale': serializer.toJson<String?>(locale),
+    };
+  }
+
+  ConfigItem copyWith(
+          {int? id, Value<String?> locale = const Value.absent()}) =>
+      ConfigItem(
+        id: id ?? this.id,
+        locale: locale.present ? locale.value : this.locale,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ConfigItem(')
+          ..write('id: $id, ')
+          ..write('locale: $locale')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, locale);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ConfigItem &&
+          other.id == this.id &&
+          other.locale == this.locale);
+}
+
+class ConfigItemsCompanion extends UpdateCompanion<ConfigItem> {
+  final Value<int> id;
+  final Value<String?> locale;
+  const ConfigItemsCompanion({
+    this.id = const Value.absent(),
+    this.locale = const Value.absent(),
+  });
+  ConfigItemsCompanion.insert({
+    this.id = const Value.absent(),
+    this.locale = const Value.absent(),
+  });
+  static Insertable<ConfigItem> custom({
+    Expression<int>? id,
+    Expression<String>? locale,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (locale != null) 'locale': locale,
+    });
+  }
+
+  ConfigItemsCompanion copyWith({Value<int>? id, Value<String?>? locale}) {
+    return ConfigItemsCompanion(
+      id: id ?? this.id,
+      locale: locale ?? this.locale,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (locale.present) {
+      map['locale'] = Variable<String>(locale.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConfigItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('locale: $locale')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $HabitItemsTable habitItems = $HabitItemsTable(this);
+  late final $ConfigItemsTable configItems = $ConfigItemsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [habitItems];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [habitItems, configItems];
 }

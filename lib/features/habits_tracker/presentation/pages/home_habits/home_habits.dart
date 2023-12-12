@@ -45,7 +45,7 @@ class _HomeHabitsState extends State<HomeHabits> {
                 onTap: () {
                   Navigator.pushNamed(context, '/create-habits');
                 },
-                text: 'Create Habit',
+                text: ln(context).createHabit,
               ),
             ),
             IconButton(
@@ -102,8 +102,8 @@ class _HomeHabitsState extends State<HomeHabits> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                            height: 36,
-                                            width: 36,
+                                            height: 50,
+                                            width: 50,
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: dayTime ==
@@ -111,10 +111,10 @@ class _HomeHabitsState extends State<HomeHabits> {
                                                   ? kAccentColor
                                                   : kPrimaryColor,
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                                 child: Text(
-                                              'All',
-                                              style: TextStyle(
+                                              ln(context).all,
+                                              style: const TextStyle(
                                                   color: Colors.white),
                                             ))),
                                       ),
@@ -169,10 +169,10 @@ class _HomeHabitsState extends State<HomeHabits> {
                                   color: kAccentColor,
                                   size: 100,
                                 ),
-                                const Text(
-                                  'No hay habitos creados ',
+                                Text(
+                                  ln(context).habitsnotyetcreated,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 25.0),
                                 ),
                               ],
