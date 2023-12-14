@@ -302,6 +302,8 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
     return [
       Expanded(
         child: InkWell(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(99), bottomLeft: Radius.circular(99)),
           onTap: () => setState(() {
             dayTime = DayTimeHabit.anytime;
           }),
@@ -337,6 +339,8 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
       )),
       Expanded(
           child: InkWell(
+        borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(99), bottomRight: Radius.circular(99)),
         onTap: () => setState(() {
           dayTime = DayTimeHabit.evening;
         }),

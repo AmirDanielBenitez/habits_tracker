@@ -57,6 +57,8 @@ class DayTimeToggle extends StatelessWidget {
         children: [
           Expanded(
               child: InkWell(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(99), bottomLeft: Radius.circular(99)),
             onTap: anytimeOnTap,
             child: Container(
                 color: dayTime == DayTimeHabitHome.anytime
@@ -84,6 +86,9 @@ class DayTimeToggle extends StatelessWidget {
           )),
           Expanded(
               child: InkWell(
+            borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(99),
+                bottomRight: Radius.circular(99)),
             onTap: eveningOnTap,
             child: Container(
                 color: dayTime == DayTimeHabitHome.evening

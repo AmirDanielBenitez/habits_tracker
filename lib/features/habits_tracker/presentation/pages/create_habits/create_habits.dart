@@ -170,10 +170,8 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                             SizedBox(
                               height: 36.0,
                               child: PrimaryButton(
-                                icon: Icon(
-                                  habitColor == null
-                                      ? Icons.shuffle_rounded
-                                      : Icons.brush_rounded,
+                                icon: const Icon(
+                                  Icons.brush_rounded,
                                 ),
                                 color: habitColor,
                                 onTap: () {
@@ -303,6 +301,8 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
     return [
       Expanded(
           child: InkWell(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(99), bottomLeft: Radius.circular(99)),
         onTap: () => setState(() {
           dayTime = DayTimeHabit.anytime;
         }),
@@ -336,6 +336,8 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
       )),
       Expanded(
           child: InkWell(
+        borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(99), bottomRight: Radius.circular(99)),
         onTap: () => setState(() {
           dayTime = DayTimeHabit.evening;
         }),

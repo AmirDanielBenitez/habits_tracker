@@ -94,6 +94,8 @@ class _HomeHabitsState extends State<HomeHabits> {
                                 child: Row(
                                   children: [
                                     InkWell(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(99)),
                                       onTap: () {
                                         setState(() {
                                           dayTime = DayTimeHabitHome.all;
