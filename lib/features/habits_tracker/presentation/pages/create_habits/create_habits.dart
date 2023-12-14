@@ -11,6 +11,8 @@ import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_
 import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 import 'dart:math' as math;
 
+import 'package:reorderables/reorderables.dart';
+
 class CreateHabitsPage extends StatefulWidget {
   const CreateHabitsPage({super.key});
 
@@ -205,7 +207,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                                   visible: checklist.isNotEmpty,
                                   child: SizedBox(
                                     height: (checklist.length + 1) * 41.0,
-                                    child: checkListView(),
+                                    child: checkList(),
                                   ),
                                 ),
                                 SizedBox(
@@ -350,8 +352,9 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
     ];
   }
 
-  ReorderableListView checkListView() {
-    return ReorderableListView(
+  Widget checkList() {
+    return ReorderableWrap(
+      scrollPhysics: const NeverScrollableScrollPhysics(),
       children: [
         for (int i = 0; i < checklist.length; i++)
           Container(
@@ -399,7 +402,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                 ),
               ],
             ),
-          )
+          ),
       ],
       onReorder: (oldIndex, newIndex) {
         setState(() {

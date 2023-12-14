@@ -11,6 +11,8 @@ import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_
 import 'package:habits_tracker/features/habits_tracker/presentation/widgets/buttons.dart';
 import 'dart:math' as math;
 
+import 'package:reorderables/reorderables.dart';
+
 class EditHabitsPage extends StatefulWidget {
   final HabitEntity habit;
   const EditHabitsPage({required this.habit, super.key});
@@ -108,7 +110,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
               .add(DeleteHabitEvent(widget.habit.id));
           Navigator.pop(context);
         },
-        backgroundColor: kBackgroundColor,
+        backgroundColor: Colors.red,
         foregroundColor: Colors.white,
         child: const Icon(
           Icons.delete_forever_rounded,
@@ -209,7 +211,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                             visible: checklist.isNotEmpty,
                             child: SizedBox(
                               height: (checklist.length + 1) * 41.0,
-                              child: checkListView(),
+                              child: checkList(),
                             ),
                           ),
                           SizedBox(
@@ -353,8 +355,9 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
     ];
   }
 
-  ReorderableListView checkListView() {
-    return ReorderableListView(
+  Widget checkList() {
+    return ReorderableWrap(
+      scrollPhysics: const NeverScrollableScrollPhysics(),
       children: [
         for (int i = 0; i < checklist.length; i++)
           Container(
@@ -402,7 +405,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                 ),
               ],
             ),
-          )
+          ),
       ],
       onReorder: (oldIndex, newIndex) {
         setState(() {

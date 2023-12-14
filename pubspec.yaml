@@ -88,6 +88,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # reordable
+  reorderables: ^0.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
