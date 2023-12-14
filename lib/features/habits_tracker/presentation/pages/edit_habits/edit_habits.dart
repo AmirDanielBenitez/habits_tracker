@@ -94,10 +94,10 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                 print('Habit dayTime: ${habit.dayTime}');
                 print('Habit specificDays: ${habit.specificDays}');
               },
-              child: const Text(
-                'Save',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              child: Text(
+                ln(context).save,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ))
         ],
       ),
@@ -434,7 +434,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
 
     showDialog(
       builder: (context) => AlertDialog(
-        title: const Text('Pick a color!'),
+        title: Text(ln(context).pickacolor),
         content: SingleChildScrollView(
           //definir
           // child: BlockPicker(
@@ -457,7 +457,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
         ),
         actions: <Widget>[
           ElevatedButton(
-            child: const Text('Got it'),
+            child: Text(ln(context).gotit),
             onPressed: () {
               Navigator.of(context).pop();
             },

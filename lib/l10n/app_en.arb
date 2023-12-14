@@ -63,5 +63,14 @@
   "@habitnotcreated": {},
 
   "habitnameisempty": "Habit name is empty",
-  "@habitnameisempty": {}
+  "@habitnameisempty": {},
+
+  "pickacolor": "Pick a color!",
+  "@pickacolor": {},
+
+  "gotit": "Got it",
+  "@gotit": {},
+
+  "save": "Save",
+  "@save": {}
 }

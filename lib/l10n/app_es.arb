@@ -1,5 +1,5 @@
 {
-    "createHabit": "Crear habito",
+    "createHabit": "Crear hábito",
     
     "config": "Configuraciones",
     
@@ -7,7 +7,7 @@
 
     "create": "Crear",
 
-    "habitName": "Habito",
+    "habitName": "Hábito",
 
     "checklist": "{count,plural, =1{tarea} other{Tareas}}",
 
@@ -19,7 +19,7 @@
 
     "morning": "Mañana",
 
-    "afternoon": "Siesta",
+    "afternoon": "Tarde",
 
     "evening": "Noche",
 
@@ -37,5 +37,11 @@
 
     "habitnotcreated": "Habito no creado",
 
-    "habitnameisempty": "Nombre del habito vacio"
+    "habitnameisempty": "Nombre del habito vacio",
+
+    "pickacolor": "Elija un color",
+
+    "gotit": "ok",
+
+    "save": "Guardar"
 }

@@ -433,7 +433,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
 
     showDialog(
       builder: (context) => AlertDialog(
-        title: const Text('Pick a color!'),
+        title: Text(ln(context).pickacolor),
         content: SingleChildScrollView(
           //definir
           // child: BlockPicker(
@@ -456,7 +456,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
         ),
         actions: <Widget>[
           ElevatedButton(
-            child: const Text('Got it'),
+            child: Text(ln(context).gotit),
             onPressed: () {
               Navigator.of(context).pop();
             },
