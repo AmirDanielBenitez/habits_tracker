@@ -148,6 +148,9 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                                   cursorColor: kAccentColor,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(
+                                      bottom: 36 / 2,
+                                    ),
                                   ),
                                 ),
                               ),

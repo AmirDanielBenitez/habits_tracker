@@ -150,6 +150,9 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                             cursorColor: kAccentColor,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                bottom: 36 / 2,
+                              ),
                             ),
                           ),
                         ),
