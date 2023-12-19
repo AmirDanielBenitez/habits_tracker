@@ -24,6 +24,8 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   String habitName = '';
   late Color habitColor;
   final List<CheckListEntity> checklist = [];
+  final List<FocusNode> _focusNodes = [];
+
   DayTimeHabit dayTime = DayTimeHabit.anytime;
   late List<Widget> daytimesList = [];
 
@@ -59,6 +61,14 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
     });
     habitColor =
         Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+  }
+
+  @override
+  void dispose() {
+    for (var node in _focusNodes) {
+      node.dispose();
+    }
+    super.dispose();
   }
 
   @override
@@ -142,6 +152,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                                   color: Colors.white,
                                 ),
                                 child: TextField(
+                                  autofocus: true,
                                   onChanged: (text) {
                                     setState(() {
                                       habitName = text;
@@ -221,6 +232,9 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                                         checklist.add(CheckListEntity(
                                             name:
                                                 '${getIndexText(newIndex)} ${ln(context).checklist(1)}'));
+                                        _focusNodes.add(FocusNode());
+                                        _focusNodes[newIndex - 1]
+                                            .requestFocus();
                                       });
                                     },
                                   ),
@@ -367,6 +381,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 IconButton(
                     padding: const EdgeInsets.only(left: 10.0),
@@ -380,17 +395,23 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                       color: Colors.white,
                     )),
                 Expanded(
-                    child: TextField(
-                  onChanged: (text) {
-                    checklist[i] = CheckListEntity(name: text);
-                  },
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                  cursorColor: kAccentColor,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: checklist[i].name,
-                      hintStyle: const TextStyle(color: Colors.white)),
+                    child: Center(
+                  child: TextField(
+                    focusNode: _focusNodes[i],
+                    onChanged: (text) {
+                      checklist[i] = CheckListEntity(name: text);
+                    },
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: kAccentColor,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(
+                          bottom: 36 / 3,
+                        ),
+                        border: InputBorder.none,
+                        hintText: checklist[i].name,
+                        hintStyle: const TextStyle(color: Colors.white)),
+                  ),
                 )),
                 const Padding(
                   padding: EdgeInsets.only(right: 10.0),

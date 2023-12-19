@@ -25,6 +25,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
   late TextEditingController habitNameController;
   late Color habitColor;
   List<CheckListEntity> checklist = [];
+  final List<FocusNode> _focusNodes = [];
   DayTimeHabit dayTime = DayTimeHabit.anytime;
 
   bool repeatsEveryday = true;
@@ -52,6 +53,9 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
   @override
   void dispose() {
     specificDays = null;
+    for (var node in _focusNodes) {
+      node.dispose();
+    }
     super.dispose();
   }
 
@@ -226,6 +230,8 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                                       name:
                                           '${getIndexText(newIndex)} ${ln(context).checklist(1)}'));
                                 });
+                                _focusNodes.add(FocusNode());
+                                _focusNodes[newIndex - 1].requestFocus();
                               },
                             ),
                           ),
@@ -383,17 +389,23 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                       color: Colors.white,
                     )),
                 Expanded(
-                    child: TextField(
-                  onChanged: (text) {
-                    checklist[i] = CheckListEntity(name: text);
-                  },
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                  cursorColor: kAccentColor,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: checklist[i].name,
-                      hintStyle: const TextStyle(color: Colors.white)),
+                    child: Center(
+                  child: TextField(
+                    focusNode: _focusNodes[i],
+                    onChanged: (text) {
+                      checklist[i] = CheckListEntity(name: text);
+                    },
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: kAccentColor,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(
+                          bottom: 36 / 3,
+                        ),
+                        border: InputBorder.none,
+                        hintText: checklist[i].name,
+                        hintStyle: const TextStyle(color: Colors.white)),
+                  ),
                 )),
                 const Padding(
                   padding: EdgeInsets.only(right: 10.0),

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:day_picker/model/day_in_week.dart';
 import 'package:flutter/material.dart';
 import 'package:habits_tracker/core/resources/helper.dart';
