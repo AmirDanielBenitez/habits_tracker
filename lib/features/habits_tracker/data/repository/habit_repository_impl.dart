@@ -217,6 +217,9 @@ class HabitRepositoryImpl implements HabitRepository {
                 : habitItem.streak > 0
                     ? (habitItem.streak - 1)
                     : 0),
+            checkList: Value((habitItem.checkList
+                ?.map((item) => CheckListModel(name: item.name, done: done))
+                .toList())),
             lastDone: Value(DateTime.now()),
           ),
         );

@@ -391,7 +391,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                 Expanded(
                     child: Center(
                   child: TextField(
-                    focusNode: _focusNodes[i],
+                    focusNode: _focusNodes.isNotEmpty ? _focusNodes[i] : null,
                     onChanged: (text) {
                       checklist[i] = CheckListEntity(name: text);
                     },
