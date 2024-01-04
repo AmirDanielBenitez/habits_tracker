@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:habits_tracker/core/database.dart';
 import 'package:habits_tracker/core/resources/helper.dart';
 import 'package:habits_tracker/features/habits_tracker/data/models/checklist_model.dart';
@@ -45,6 +46,9 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
       final bool created = await _habitUseCase.create(habit: event.habit);
 
       if (created) {
+        await FirebaseAnalytics.instance.logEvent(
+            name: 'habit_created', parameters: {'name': event.habit.name});
+
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
 
@@ -80,6 +84,8 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
 
       final bool edited = await _habitUseCase.edit(habit: event.habit);
       if (edited) {
+        await FirebaseAnalytics.instance.logEvent(name: 'habit_edited');
+
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
         showToast(sl<ConfigItem>().locale == 'es'
@@ -116,6 +122,8 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
           await _habitUseCase.delete(habitCode: event.habitCode);
 
       if (deleted) {
+        await FirebaseAnalytics.instance.logEvent(name: 'habit_deleted');
+
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
         showToast(sl<ConfigItem>().locale == 'es'
@@ -151,7 +159,10 @@ class HabitsBloc extends Bloc<HabitsEvent, HabitsState> {
 
       final bool done =
           await _habitUseCase.done(event.done, habitCode: event.habitCode);
+
       if (done) {
+        await FirebaseAnalytics.instance.logEvent(name: 'habit_done');
+
         final List<HabitEntity> habitsUpdated = await _habitUseCase();
         emit(HabitsLoaded(habitsUpdated));
         sl<ConfigItem>().locale == 'es' ? 'Habito hecho' : 'Habit done';

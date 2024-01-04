@@ -16,3 +16,7 @@ Para cambiar el logo
 
 Para cambiar el splash
 'dart run flutter_native_splash:create'
+
+Para usar firebase debugview
+'adb shell setprop debug.firebase.analytics.app com.benitez.amir.habitstracker'
+'adb shell setprop debug.firebase.analytics.app .none.'

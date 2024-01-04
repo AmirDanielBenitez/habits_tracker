@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habits_tracker/config/routes/routes.dart';
@@ -7,13 +9,22 @@ import 'package:habits_tracker/features/config_page/presentation/bloc/bloc/confi
 import 'package:habits_tracker/features/habits_tracker/presentation/bloc/habits_bloc.dart';
 import 'package:habits_tracker/features/habits_tracker/presentation/pages/home_habits/home_habits.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:habits_tracker/firebase_options.dart';
 import 'package:habits_tracker/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'injection_container.dart';
+import 'dart:io' show Platform;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseAnalytics.instance.logEvent(
+      name: 'start_app',
+      parameters: {'platform': Platform.isAndroid ? 'Android' : 'iOS'});
 
   runApp(const MyApp());
 }
