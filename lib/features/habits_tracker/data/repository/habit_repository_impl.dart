@@ -175,6 +175,8 @@ class HabitRepositoryImpl implements HabitRepository {
                     .map((e) => CheckListModel.fromEntity(e))
                     .toList()
                 : null),
+            streak: Value(habit.streak),
+            done: Value(habit.done),
             dayTime: Value(habit.dayTime),
             specificDays: Value(json.encode(habit.specificDays)),
           ));

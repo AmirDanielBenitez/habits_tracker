@@ -82,14 +82,13 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
           TextButton(
               onPressed: () {
                 final HabitEntity habit = widget.habit.copyWith(
-                  name: habitNameController.text,
-                  color: habitColor,
-                  checkList: checklist,
-                  dayTime: dayTime,
-                  specificDays: repeatsEveryday ? null : specificDays,
-                  done: false,
-                  streak: 0,
-                );
+                    name: habitNameController.text,
+                    color: habitColor,
+                    checkList: checklist,
+                    dayTime: dayTime,
+                    specificDays: repeatsEveryday ? null : specificDays,
+                    done: widget.habit.done,
+                    streak: widget.habit.streak);
 
                 BlocProvider.of<HabitsBloc>(context).add(EditHabitEvent(habit));
                 Navigator.pop(context);

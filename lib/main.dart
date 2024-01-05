@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
             theme: theme(),
             onGenerateRoute: AppRoutes.onGenerateRoute,
             localizationsDelegates: const [
@@ -56,14 +57,7 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            // locale: Locale('es'),
-
             locale: getLocale(state),
-            // locale: sl<ConfigItem>().locale != null
-            //     ? Locale(sl<ConfigItem>().locale!)
-            //     : null,
-            // locale: appLocale != null ? Locale(appLocale!.languageCode) : null,
-
             supportedLocales: L10n.all,
             home: const HomeHabits(),
           );
