@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:day_picker/model/day_in_week.dart';
 import 'package:flutter/material.dart';
 import 'package:habits_tracker/core/resources/helper.dart';
@@ -71,21 +72,33 @@ final List<DayInWeek> kDaysInWeekES = [
 
 Widget getDayTime(BuildContext context, {required int index}) {
   List<Widget> daytimesList = [
-    Text(
+    AutoSizeText(
       ln(context).anytime,
+      maxLines: 1,
+      maxFontSize: 18.0,
+      minFontSize: 5.0,
       textAlign: TextAlign.center,
       style: const TextStyle(color: Colors.white),
     ),
-    Text(
+    AutoSizeText(
       ln(context).morning,
+      maxLines: 1,
+      maxFontSize: 18.0,
+      minFontSize: 5.0,
       style: const TextStyle(color: Colors.white),
     ),
-    Text(
+    AutoSizeText(
       ln(context).afternoon,
+      maxLines: 1,
+      maxFontSize: 18.0,
+      minFontSize: 5.0,
       style: const TextStyle(color: Colors.white),
     ),
-    Text(
+    AutoSizeText(
       ln(context).evening,
+      maxLines: 1,
+      maxFontSize: 18.0,
+      minFontSize: 5.0,
       style: const TextStyle(color: Colors.white),
     ),
   ];

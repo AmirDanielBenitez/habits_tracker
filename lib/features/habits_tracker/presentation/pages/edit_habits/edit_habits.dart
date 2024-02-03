@@ -272,7 +272,7 @@ class _EditHabitsPageState extends State<EditHabitsPage> {
                           Visibility(
                             visible: !repeatsEveryday,
                             child: SelectWeekDays(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontWeight: FontWeight.w500,
                               days: Localizations.localeOf(context)
                                           .languageCode ==

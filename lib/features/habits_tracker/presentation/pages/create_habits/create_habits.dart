@@ -38,40 +38,6 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        daytimesList = [
-          AutoSizeText(
-            ln(context).anytime,
-            maxLines: 1,
-            maxFontSize: 18,
-            minFontSize: 5,
-            style: const TextStyle(color: Colors.white),
-          ),
-          AutoSizeText(
-            ln(context).morning,
-            maxLines: 1,
-            maxFontSize: 18,
-            minFontSize: 5,
-            style: const TextStyle(color: Colors.white),
-          ),
-          AutoSizeText(
-            ln(context).afternoon,
-            maxLines: 1,
-            maxFontSize: 18,
-            minFontSize: 5,
-            style: const TextStyle(color: Colors.white),
-          ),
-          AutoSizeText(
-            ln(context).evening,
-            maxLines: 1,
-            maxFontSize: 18,
-            minFontSize: 5,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ];
-      });
-    });
     habitColor =
         Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   }
@@ -140,187 +106,181 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SafeArea(
-          child: daytimesList.isNotEmpty
-              ? Column(
-                  children: [
-                    Row(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                ln(context).habitName,
-                                style: const TextStyle(color: Colors.white),
+                        Text(
+                          ln(context).habitName,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 5.0),
+                        Container(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          width: double.infinity,
+                          height: 36.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kBorderRadious),
+                            color: Colors.white,
+                          ),
+                          child: TextField(
+                            autofocus: true,
+                            onChanged: (text) {
+                              setState(() {
+                                habitName = text;
+                              });
+                            },
+                            cursorColor: kAccentColor,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                bottom: 36 / 2,
                               ),
-                              const SizedBox(height: 5.0),
-                              Container(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                width: double.infinity,
-                                height: 36.0,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(kBorderRadious),
-                                  color: Colors.white,
-                                ),
-                                child: TextField(
-                                  autofocus: true,
-                                  onChanged: (text) {
-                                    setState(() {
-                                      habitName = text;
-                                    });
-                                  },
-                                  cursorColor: kAccentColor,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(
-                                      bottom: 36 / 2,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 10.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Color',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            const SizedBox(height: 5.0),
-                            SizedBox(
-                              height: 36.0,
-                              child: PrimaryButton(
-                                icon: const Icon(
-                                  Icons.brush_rounded,
-                                ),
-                                color: habitColor,
-                                onTap: () {
-                                  _showColorPicker();
-                                },
-                              ),
-                            )
-                          ],
-                        )
                       ],
                     ),
-                    const SizedBox(height: 10.0),
-                    Expanded(
-                        child: Card(
-                      margin: EdgeInsets.zero,
-                      color: Colors.white,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  ln(context).checklist(0),
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                                const SizedBox(height: 5.0),
-                                Visibility(
-                                  visible: checklist.isNotEmpty,
-                                  child: SizedBox(
-                                    height: (checklist.length + 1) * 41.0,
-                                    child: checkList(),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: PrimaryButton(
-                                    text: ln(context).newCheckListItem,
-                                    onTap: () {
-                                      final int newIndex = checklist.length + 1;
-
-                                      setState(() {
-                                        checklist.add(CheckListEntity(
-                                            name:
-                                                '${getIndexText(newIndex)} ${ln(context).checklist(1)}'));
-                                        _focusNodes.add(FocusNode());
-                                        _focusNodes[newIndex - 1]
-                                            .requestFocus();
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 5.0),
-                                Text(
-                                  ln(context).daytime,
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                                const SizedBox(height: 5.0),
-                                Container(
-                                  height: 36.0,
-                                  decoration: ShapeDecoration(
-                                      shape: const StadiumBorder(),
-                                      color: kBackgroundColor),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Row(
-                                    children: getDayTimeToggles,
-                                  ),
-                                ),
-                                const SizedBox(height: 5.0),
-                                Text(
-                                  ln(context).repeats,
-                                  style: TextStyle(color: Colors.grey.shade700),
-                                ),
-                                const SizedBox(height: 5.0),
-                                SizedBox(
-                                    width: double.infinity,
-                                    child: PrimaryButton(
-                                      onTap: () {
-                                        setState(() {
-                                          repeatsEveryday = !repeatsEveryday;
-                                        });
-                                      },
-                                      text: repeatsEveryday
-                                          ? ln(context).everyday
-                                          : ln(context).customDays,
-                                    )),
-                                const SizedBox(height: 5.0),
-                                Visibility(
-                                  visible: !repeatsEveryday,
-                                  child: SelectWeekDays(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    days: Localizations.localeOf(context)
-                                                .languageCode ==
-                                            'en'
-                                        ? kDaysInWeek
-                                        : kDaysInWeekES,
-                                    border: false,
-                                    boxDecoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            kBorderRadious),
-                                        color: kBackgroundColor),
-                                    daysFillColor: kAccentColor,
-                                    selectedDayTextColor: Colors.white,
-                                    unSelectedDayTextColor: Colors.white,
-                                    onSelect: (values) {
-                                      specificDays = values;
-                                    },
-                                  ),
-                                ),
-                              ],
+                  ),
+                  const SizedBox(width: 10.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'Color',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 5.0),
+                      SizedBox(
+                        height: 36.0,
+                        child: PrimaryButton(
+                          icon: const Icon(
+                            Icons.brush_rounded,
+                          ),
+                          color: habitColor,
+                          onTap: () {
+                            _showColorPicker();
+                          },
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 10.0),
+              Expanded(
+                  child: Card(
+                margin: EdgeInsets.zero,
+                color: Colors.white,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            ln(context).checklist(0),
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Visibility(
+                            visible: checklist.isNotEmpty,
+                            child: SizedBox(
+                              height: (checklist.length + 1) * 41.0,
+                              child: checkList(),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: PrimaryButton(
+                              text: ln(context).newCheckListItem,
+                              onTap: () {
+                                final int newIndex = checklist.length + 1;
+
+                                setState(() {
+                                  checklist.add(CheckListEntity(
+                                      name:
+                                          '${getIndexText(newIndex)} ${ln(context).checklist(1)}'));
+                                  _focusNodes.add(FocusNode());
+                                  _focusNodes[newIndex - 1].requestFocus();
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            ln(context).daytime,
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Container(
+                            height: 36.0,
+                            decoration: ShapeDecoration(
+                                shape: const StadiumBorder(),
+                                color: kBackgroundColor),
+                            clipBehavior: Clip.antiAlias,
+                            child: Row(
+                              children: getDayTimeToggles,
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            ln(context).repeats,
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(height: 5.0),
+                          SizedBox(
+                              width: double.infinity,
+                              child: PrimaryButton(
+                                onTap: () {
+                                  setState(() {
+                                    repeatsEveryday = !repeatsEveryday;
+                                  });
+                                },
+                                text: repeatsEveryday
+                                    ? ln(context).everyday
+                                    : ln(context).customDays,
+                              )),
+                          const SizedBox(height: 5.0),
+                          Visibility(
+                            visible: !repeatsEveryday,
+                            child: SelectWeekDays(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              days: Localizations.localeOf(context)
+                                          .languageCode ==
+                                      'en'
+                                  ? kDaysInWeek
+                                  : kDaysInWeekES,
+                              border: false,
+                              boxDecoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(kBorderRadious),
+                                  color: kBackgroundColor),
+                              daysFillColor: kAccentColor,
+                              selectedDayTextColor: Colors.white,
+                              unSelectedDayTextColor: Colors.white,
+                              onSelect: (values) {
+                                specificDays = values;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    )),
-                  ],
-                )
-              : const Center(
-                  child: CircularProgressIndicator(),
+                    ),
+                  ),
                 ),
+              )),
+            ],
+          ),
         ),
       ),
     );
@@ -329,18 +289,20 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
   List<Widget> get getDayTimeToggles {
     return [
       Expanded(
-          child: InkWell(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(99), bottomLeft: Radius.circular(99)),
-        onTap: () => setState(() {
-          dayTime = DayTimeHabit.anytime;
-        }),
-        child: Container(
+        child: InkWell(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(99), bottomLeft: Radius.circular(99)),
+          onTap: () => setState(() {
+            dayTime = DayTimeHabit.anytime;
+          }),
+          child: Container(
             color: dayTime == DayTimeHabit.anytime
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[0])),
-      )),
+            child: Center(child: getDayTime(context, index: 0)),
+          ),
+        ),
+      ),
       Expanded(
           child: InkWell(
         onTap: () => setState(() {
@@ -350,7 +312,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
             color: dayTime == DayTimeHabit.morning
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[1])),
+            child: Center(child: getDayTime(context, index: 1))),
       )),
       Expanded(
           child: InkWell(
@@ -361,7 +323,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
             color: dayTime == DayTimeHabit.afternoon
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[2])),
+            child: Center(child: getDayTime(context, index: 2))),
       )),
       Expanded(
           child: InkWell(
@@ -374,7 +336,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
             color: dayTime == DayTimeHabit.evening
                 ? kAccentColor
                 : Colors.transparent,
-            child: Center(child: daytimesList[3])),
+            child: Center(child: getDayTime(context, index: 3))),
       )),
     ];
   }
