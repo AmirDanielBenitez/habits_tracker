@@ -20,3 +20,6 @@ Para cambiar el splash
 Para usar firebase debugview
 'adb shell setprop debug.firebase.analytics.app com.benitez.amir.habitstracker'
 'adb shell setprop debug.firebase.analytics.app .none.'
+
+Si no detecta app localization
+flutter packages pub run build_runner build --delete-conflicting-outputs

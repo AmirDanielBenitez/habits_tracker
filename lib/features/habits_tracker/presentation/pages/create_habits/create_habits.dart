@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,20 +41,32 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       setState(() {
         daytimesList = [
-          Text(
+          AutoSizeText(
             ln(context).anytime,
+            maxLines: 1,
+            maxFontSize: 18,
+            minFontSize: 5,
             style: const TextStyle(color: Colors.white),
           ),
-          Text(
+          AutoSizeText(
             ln(context).morning,
+            maxLines: 1,
+            maxFontSize: 18,
+            minFontSize: 5,
             style: const TextStyle(color: Colors.white),
           ),
-          Text(
+          AutoSizeText(
             ln(context).afternoon,
+            maxLines: 1,
+            maxFontSize: 18,
+            minFontSize: 5,
             style: const TextStyle(color: Colors.white),
           ),
-          Text(
+          AutoSizeText(
             ln(context).evening,
+            maxLines: 1,
+            maxFontSize: 18,
+            minFontSize: 5,
             style: const TextStyle(color: Colors.white),
           ),
         ];
@@ -277,7 +290,7 @@ class _CreateHabitsPageState extends State<CreateHabitsPage> {
                                 Visibility(
                                   visible: !repeatsEveryday,
                                   child: SelectWeekDays(
-                                    fontSize: 12,
+                                    fontSize: 10,
                                     fontWeight: FontWeight.w500,
                                     days: Localizations.localeOf(context)
                                                 .languageCode ==
