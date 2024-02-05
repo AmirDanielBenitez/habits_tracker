@@ -1,6 +1,7 @@
 # habits_tracker
 
 Habits Tracker is the essential tool to help you incorporate positive habits into your daily life. With an intuitive and user-friendly design, this app allows you to efficiently log and track your daily habits.
+https://play.google.com/store/apps/details?id=com.benitez.amir.habitstracker
 
 ## Getting Started
 
